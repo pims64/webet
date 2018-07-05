@@ -7,21 +7,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.webet.config.UtilisateurPrincipal;
-import com.webet.dao.IUtilisateurJpaRepository;
-import com.webet.entities.Utilisateur;
+import com.webet.dao.IClientJpaRepository;
+import com.webet.entities.Client;
 
 @Service
 public class LoginService implements UserDetailsService {
 
     @Autowired
-    private IUtilisateurJpaRepository utilisateurRepo;
+    private IClientJpaRepository clientRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	Utilisateur utilisateur = utilisateurRepo.findByEmail(username);
-	if (null == utilisateur) {
+	Client client = clientRepo.findByUtilisateurEmail(username);
+	if (null == client) {
 	    throw new UsernameNotFoundException("No user found with username: " + username);
 	}
-	return new UtilisateurPrincipal(utilisateur);
+	return new UtilisateurPrincipal(client);
     }
 }

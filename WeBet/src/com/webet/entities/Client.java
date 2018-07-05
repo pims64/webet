@@ -2,6 +2,7 @@ package com.webet.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Client {
 
     private Double montantMaxPari;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.ALL })
     private Utilisateur utilisateur;
 
     public Client() {

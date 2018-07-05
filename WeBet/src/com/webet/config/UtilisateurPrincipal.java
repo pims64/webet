@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.webet.entities.Client;
 import com.webet.entities.Utilisateur;
 
 public class UtilisateurPrincipal implements UserDetails {
@@ -15,8 +16,11 @@ public class UtilisateurPrincipal implements UserDetails {
 
     private Utilisateur utilisateur;
 
-    public UtilisateurPrincipal(Utilisateur utilisateur) {
-	this.utilisateur = utilisateur;
+    private Client client;
+
+    public UtilisateurPrincipal(Client client) {
+	this.utilisateur = client.getUtilisateur();
+	this.client = client;
     }
 
     @Override
@@ -24,6 +28,10 @@ public class UtilisateurPrincipal implements UserDetails {
 	Collection<GrantedAuthority> authorities = new ArrayList<>();
 	authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 	return authorities;
+    }
+
+    public Client getClient() {
+	return client;
     }
 
     @Override
@@ -34,6 +42,10 @@ public class UtilisateurPrincipal implements UserDetails {
     @Override
     public String getUsername() {
 	return utilisateur.getEmail();
+    }
+
+    public Utilisateur getUtilisateur() {
+	return utilisateur;
     }
 
     @Override
