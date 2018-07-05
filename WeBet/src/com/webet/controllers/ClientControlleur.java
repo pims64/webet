@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,8 @@ import com.webet.entities.Client;
 import com.webet.entities.Sport;
 
 @Controller
-@RequestMapping("/clientcontroller")
-public class ClientController {
+@RequestMapping("/clientcontrolleur")
+public class ClientControlleur {
 
     @Autowired
     private IClientJpaRepository clientRepo;
@@ -25,17 +26,19 @@ public class ClientController {
     @Autowired
     private ISportJpaRepository sportRepo;
 
+    @GetMapping("/goToCreer")
+    public String goToCreation(@ModelAttribute(value = "client") Client client, Model model) {
+	model.addAttribute("isGoToCreer", true);
+	return "inscription";
+    }
+
     @PostMapping("/creer")
     public String creer(@ModelAttribute(value = "client") Client client, BindingResult result, Model model) {
-	// if (!result.hasErrors()) {
-	// encodePassword(client);
 	clientRepo.save(client);
 	model.addAttribute("client", new Client());
-	// }
 	List<Sport> sports = sportRepo.findAll();
 	model.addAttribute("sports", sports);
 	return "accueil";
 
     }
-
 }
