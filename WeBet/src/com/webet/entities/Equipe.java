@@ -15,6 +15,8 @@ public class Equipe {
 
     private String nom;
 
+    private String nomImg;
+
     @ManyToOne
     private Sport sport;
 
@@ -23,7 +25,7 @@ public class Equipe {
 
     @Override
     public String toString() {
-	return "Equipe [id=" + id + ", nom=" + nom + ", sport=" + sport + "]";
+	return "Equipe [id=" + id + ", nom=" + nom + ", nomImg=" + nomImg + ", sport=" + sport + "]";
     }
 
     public Long getId() {
@@ -44,6 +46,14 @@ public class Equipe {
 
     public Sport getSport() {
 	return sport;
+    }
+
+    public String getNomImg() {
+	return nomImg;
+    }
+
+    public void setNomImg(String nomImg) {
+	this.nomImg = nomImg;
     }
 
     public void setSport(Sport sport) {

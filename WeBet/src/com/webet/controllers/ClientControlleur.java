@@ -41,8 +41,9 @@ public class ClientControlleur {
     public String creer(@Valid @ModelAttribute(value = "client") Client client, BindingResult result, Model model) {
 	if (!result.hasErrors()) {
 	    encodePassword(client);
-	    clientRepo.save(client);
-	    model.addAttribute("client", new Client());
+	    client.getUtilisateur().setRole(ERole.ROLE_USER);
+	    model.addAttribute("client", clientRepo.save(client));
+	    return "accueil";
 	}
 	List<Sport> sports = sportRepo.findAll();
 	model.addAttribute("sports", sports);
@@ -67,16 +68,17 @@ public class ClientControlleur {
 	return "modifierclient";
     }
 
-    @PostMapping("/modifier")
-    public String modifier(@Valid @ModelAttribute(value = "client") Client client, BindingResult result, Model model) {
-	if (!result.hasErrors()) {
-	    encodePassword(client);
-	    clientRepo.save(client);
-	}
-	List<Sport> sports = sportRepo.findAll();
-	model.addAttribute("sports", sports);
-	return "modifiersport";
-    }
+    // @PostMapping("/modifier")
+    // public String modifier(@Valid @ModelAttribute(value = "client") Client
+    // client, BindingResult result, Model model) {
+    // if (!result.hasErrors()) {
+    // encodePassword(client);
+    // clientRepo.save(client);
+    // }
+    // List<Sport> sports = sportRepo.findAll();
+    // model.addAttribute("sports", sports);
+    // return "modifierclient";
+    // }
 
     @GetMapping("/afficherliste")
     public String afficherListe(Model model) {
@@ -90,7 +92,7 @@ public class ClientControlleur {
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	clientRepo.deleteById(id);
-	return "redirect:/clientcontrolleur/afficherListe";
+	return "redirect:/clientcontrolleur/afficherliste";
     }
 
 }

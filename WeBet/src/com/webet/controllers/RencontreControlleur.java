@@ -35,7 +35,6 @@ public class RencontreControlleur {
     public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	rencontreRepo.save(rencontre);
 	model.addAttribute("rencontre", new Rencontre());
-
 	return "creerrencontre";
 
     }
@@ -47,13 +46,6 @@ public class RencontreControlleur {
 	return "modifierrencontre";
     }
 
-    @PostMapping("/modifier")
-    public String modifier(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
-	rencontreRepo.save(rencontre);
-
-	return "modifierrencontre";
-    }
-
     @GetMapping("/afficherliste")
     public String afficherListe(Model model) {
 	List<Rencontre> rencontres = rencontreRepo.findAll();
@@ -61,7 +53,6 @@ public class RencontreControlleur {
 	return "listerencontre";
     }
 
-    @Secured("ROLE_ADMIN")
     @SuppressWarnings("unused")
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
