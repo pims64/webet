@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	http.authorizeRequests().antMatchers("/static/**").permitAll().anyRequest().authenticated().and().formLogin()
 		.loginPage("/utilisateurcontrolleur/goToAuth").loginProcessingUrl("/login")
-		.defaultSuccessUrl("/clientcontrolleur/goToSite", true)
+		.defaultSuccessUrl("/hellocontrolleur/goToSite", true)
 		.failureUrl("/utilisateurcontrolleur/goToAuth?error=true").permitAll().and().logout()
 		.invalidateHttpSession(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/utilisateurcontrolleur/goToAuth?logout=true").permitAll();
