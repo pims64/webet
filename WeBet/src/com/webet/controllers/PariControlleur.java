@@ -24,11 +24,17 @@ public class PariControlleur {
     @Autowired
     private IPariJpaRepository pariRepo;
 
+    @GetMapping("/goToCreer")
+    public String goToCreer(@ModelAttribute(value = "pari") Pari pari, Model model) {
+	model.addAttribute("isGoToCreer", true);
+	return "administration";
+    }
+
     @PostMapping("/creer")
     public String creer(@Valid @ModelAttribute(value = "pari") Pari pari, BindingResult result, Model model) {
 	if (!result.hasErrors()) {
 	    pariRepo.save(pari);
-	    model.addAttribute("client", new Pari());
+	    model.addAttribute("pari", new Pari());
 	    return "administration";
 	}
 	return "pari";
@@ -41,14 +47,18 @@ public class PariControlleur {
 	return "administration";
     }
 
-    @Secured("ROLE_ADMIN")
+    @GetMapping("/goToModifier")
+    public String goToModifier(@ModelAttribute(value = "pari") Pari pari, Model model) {
+	model.addAttribute("isGoToModifier", true);
+	return "administration";
+    }
+
     @GetMapping("/modifier/{id}")
     public String modifier(@PathVariable(value = "id", required = false) Long id, Model model) {
 	model.addAttribute("pari", pariRepo.getOne(id));
 	return "redirect:/paricontrolleur/creer";
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/supprimer/{id}")
     public String delete(@PathVariable(value = "id", required = true) Long id, Model model) {
 	pariRepo.deleteById(id);
