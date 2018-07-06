@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:import url="header.jsp"/>
 
-<sec:authentication property="principal.client"/>
+
 
 <a href="<c:url value="/clientcontrolleur/goToCreer"/>">Créer un compte</a>
 

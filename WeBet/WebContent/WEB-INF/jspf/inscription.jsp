@@ -7,6 +7,7 @@
 		<spring:message code="client.header" />
 	</h2>
 	<form method="POST" action="${pageContext.request.contextPath}/clientcontrolleur/creer" modelAttribute="client">
+	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 		<form:label path="client.nom"><spring:message code="client.nom" /><span class="required">*</span></form:label>

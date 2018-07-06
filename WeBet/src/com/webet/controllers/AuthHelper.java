@@ -1,6 +1,8 @@
 package com.webet.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +38,23 @@ public class AuthHelper {
 
     public static UtilisateurPrincipal getPrincipal() {
 	return (UtilisateurPrincipal) getAuthentication().getPrincipal();
+    }
+
+    public static boolean isAuthenticated() {
+	boolean authenticated = false;
+	Collection<? extends GrantedAuthority> roles = getAuthorities();
+	List<String> eroles = new ArrayList<>();
+	for (ERole erole : ERole.values()) {
+	    eroles.add(erole.name());
+	}
+	for (GrantedAuthority grantedAuthority : roles) {
+	    String authority = grantedAuthority.getAuthority();
+	    if (eroles.contains(authority)) {
+		authenticated = true;
+		break;
+	    }
+	}
+	return authenticated;
     }
 
     public static Collection<? extends GrantedAuthority> getAuthorities() {
