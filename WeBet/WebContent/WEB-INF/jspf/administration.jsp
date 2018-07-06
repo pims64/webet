@@ -5,5 +5,6 @@
 <c:import url="header.jsp"/>
 
 ADMINISTRATION
+<a href="<c:url value="/logout" />"><spring:message code="menu.logout" /></a>
 
 <c:import url="footer.jsp"/>
