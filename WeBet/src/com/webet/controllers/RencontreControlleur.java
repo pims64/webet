@@ -48,6 +48,6 @@ public class RencontreControlleur {
     public String modifier(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	rencontreRepo.save(rencontre);
 
-	return "modifierrencontre";
+	return "modifierr";
     }
 }
