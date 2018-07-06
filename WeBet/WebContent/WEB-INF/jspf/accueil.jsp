@@ -5,8 +5,8 @@
 <c:import url="header.jsp"/>
 
 
-
-<a href="<c:url value="/clientcontrolleur/goToCreer"/>">Créer un compte</a>
+<a href="<c:url value="/clientcontrolleur/goToCreer"/>">Créer un compte</a><br>
+<a href="<c:url value="/utilisateurcontrolleur/goToAuth"/>">Se connecter</a>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed porta enim. Sed accumsan tincidunt augue vitae semper.
 Nullam turpis ipsum, consequat vitae volutpat eget, sodales at lorem. Integer tempor nisl a ipsum consequat, a consequat nisl sodales.
