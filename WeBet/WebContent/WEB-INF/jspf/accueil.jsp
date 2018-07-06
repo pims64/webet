@@ -4,9 +4,15 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:import url="header.jsp"/>
 
+<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+Mon compte
+<a href="<c:url value="/logout" />"><spring:message code="menu.logout" /></a>
+</sec:authorize>
 
+<sec:authorize access="hasRole('ANONYMOUS')">
 <a href="<c:url value="/clientcontrolleur/goToCreer"/>">Créer un compte</a><br>
 <a href="<c:url value="/utilisateurcontrolleur/goToAuth"/>">Se connecter</a>
+</sec:authorize>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed porta enim. Sed accumsan tincidunt augue vitae semper.
 Nullam turpis ipsum, consequat vitae volutpat eget, sodales at lorem. Integer tempor nisl a ipsum consequat, a consequat nisl sodales.
