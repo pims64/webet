@@ -15,10 +15,9 @@ public class HelloControlleur {
 
     @GetMapping("/goToSite")
     public String goToCreation(@ModelAttribute(value = "client") Client client, Model model) {
-	model.addAttribute("isGoToSite", true);
 	if (AuthHelper.isAuthenticated()) {
 	    if (AuthHelper.getRole().equals(ERole.ROLE_ADMIN))
-		return "adminisration";
+		return "redirect:/admincontrolleur/goToAdmin";
 	}
 	return "accueil";
     }
