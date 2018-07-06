@@ -14,7 +14,11 @@ Mon compte
 <a href="<c:url value="/utilisateurcontrolleur/goToAuth"/>">Se connecter</a>
 </sec:authorize>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed porta enim. Sed accumsan tincidunt augue vitae semper.
+<div><img src="<c:url value="/static/images/pari.jpg"/>" alt="Offre WeBet!!" /></div>
+
+
+
+<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed porta enim. Sed accumsan tincidunt augue vitae semper.
 Nullam turpis ipsum, consequat vitae volutpat eget, sodales at lorem. Integer tempor nisl a ipsum consequat, a consequat nisl sodales.
 Cras et orci lacinia lacus faucibus facilisis. Pellentesque id erat aliquet ex dictum iaculis a sit amet nulla. Proin interdum sit amet ante quis aliquet.
 Nunc eu metus varius, pellentesque lectus efficitur, feugiat quam. Aenean interdum, odio in finibus malesuada, enim lorem blandit ante, a laoreet metus neque sed quam. 
@@ -30,5 +34,5 @@ feugiat est. Nunc scelerisque a neque eu lobortis.</p>
 vel eget diam. Mauris eleifend nunc id purus aliquet fermentum. Vivamus ipsum arcu, sollicitudin at faucibus at, dapibus at urna. Curabitur ipsum odio, 
 ullamcorper quis lectus sit amet, posuere placerat dolor. Proin congue lorem id metus sagittis convallis. Pellentesque condimentum gravida malesuada. 
 Nam at porttitor elit. Nullam in suscipit justo, nec porta orci. Donec sed mauris velit. Proin placerat pharetra dui, quis imperdiet ligula fermentum sit amet.</p>
-
+ -->
 <c:import url="footer.jsp"/>
