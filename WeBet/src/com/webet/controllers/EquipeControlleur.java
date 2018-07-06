@@ -21,7 +21,7 @@ public class EquipeControlleur {
     private IEquipeJpaRepository equipeRepo;
 
     @GetMapping("/goToCreer")
-    public String goToCreation(@ModelAttribute(value = "equipe") Equipe equipe, Model model) {
+    public String goToCreer(@ModelAttribute(value = "equipe") Equipe equipe, Model model) {
 	model.addAttribute("isGoToCreer", true);
 	return "creerequipe";
     }

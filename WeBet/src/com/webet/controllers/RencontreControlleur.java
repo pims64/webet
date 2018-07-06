@@ -1,5 +1,7 @@
 package com.webet.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ public class RencontreControlleur {
     private IRencontreJpaRepository rencontreRepo;
 
     @GetMapping("/goToCreer")
-    public String goToCreation(@ModelAttribute(value = "rencontre") Equipe equipe, Model model) {
+    public String goToCreer(@ModelAttribute(value = "rencontre") Equipe equipe, Model model) {
 	model.addAttribute("isGoToCreer", true);
 	return "creerrencontre";
     }
@@ -48,6 +50,21 @@ public class RencontreControlleur {
     public String modifier(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	rencontreRepo.save(rencontre);
 
-	return "modifierr";
+	return "modifierrencontre";
+    }
+
+    @GetMapping("/afficherliste")
+    public String afficherListe(Model model) {
+	List<Rencontre> rencontres = rencontreRepo.findAll();
+	model.addAttribute("rencontres", rencontres);
+	return "listerencontre";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @SuppressWarnings("unused")
+    @GetMapping("/supprimer/{id}")
+    public String supprimer(@PathVariable("id") Long id, Model model) {
+	rencontreRepo.deleteById(id);
+	return "redirect:/rencontrecontrolleur/afficherListe";
     }
 }

@@ -33,8 +33,7 @@ public class ClientControlleur {
     private ISportJpaRepository sportRepo;
 
     @GetMapping("/goToCreer")
-    public String goToCreation(@ModelAttribute(value = "client") Client client, Model model) {
-	model.addAttribute("isGoToCreer", true);
+    public String goToCreer(@ModelAttribute(value = "client") Client client, Model model) {
 	return "inscription";
     }
 
