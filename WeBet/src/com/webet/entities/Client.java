@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Client {
@@ -18,12 +21,17 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "{error.client.nom.obligatoire}")
     private String nom;
 
+    @NotEmpty(message = "{error.client.prenom.obligatoire}")
     private String prenom;
 
+    // @NotEmpty(message = "{error.client.age.obligatoire}")
+    @Min(value = 18, message = "{error.client.age.superieur18}")
     private Integer age;
 
+    @Valid
     @Embedded
     private Adresse adresse;
 
@@ -36,6 +44,7 @@ public class Client {
 
     private Double montantMaxPari;
 
+    @Valid
     @OneToOne(cascade = { CascadeType.ALL })
     private Utilisateur utilisateur;
 
