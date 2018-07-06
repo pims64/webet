@@ -1,6 +1,7 @@
 package com.webet.entities;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 public class Adresse {
@@ -9,8 +10,10 @@ public class Adresse {
 
     private String complement;
 
+    @NotEmpty(message = "{error.adresse.codePostal.obligatoire}")
     private String codePostal;
 
+    @NotEmpty(message = "{error.adresse.ville.obligatoire}")
     private String ville;
 
     private String pays;
