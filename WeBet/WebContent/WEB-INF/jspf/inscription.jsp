@@ -28,12 +28,13 @@
 		<form:label path="client.montantMaxPari"><spring:message code="client.montantMaxPari" /><span class="required">*</span></form:label>
 		<form:input path="client.montantMaxPari" />&nbsp;<form:errors path="client.montantMaxPari" cssClass="errors" />
 		<br>
-		<form:label path="client.utilisateur.role"><spring:message code="client.role" /></form:label>
+<%-- 		<form:label path="client.utilisateur.role"><spring:message code="client.role" /></form:label>
 		<form:select path="client.utilisateur.role">
 			<form:option value="" label="" />
 			<form:options items="${roles}" itemValue="name" itemLabel="name" />
 		</form:select>&nbsp;<form:errors path="client.utilisateur.role" cssClass="errors" />
-		<br>
+		<br> --%>
+		<form:hidden path="client.utilisateur.role" value="ROLE_USER"/>
 		<form:label path="client.adresse.rue"><spring:message code="adresse.rue" /></form:label>
 		<form:input path="client.adresse.rue" />
 		<br>

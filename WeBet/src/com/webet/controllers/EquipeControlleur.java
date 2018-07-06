@@ -34,7 +34,7 @@ public class EquipeControlleur {
 	equipeRepo.save(equipe);
 	model.addAttribute("equipe", new Equipe());
 
-	return "creerequipe";
+	return "redirect:/admincontrolleur/goToAdmin";
 
     }
 
@@ -56,7 +56,7 @@ public class EquipeControlleur {
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	equipeRepo.deleteById(id);
-	return "redirect:/equipecontrolleur/afficherliste";
+	return "redirect:/admincontrolleur/goToAdmin";
     }
 
 }

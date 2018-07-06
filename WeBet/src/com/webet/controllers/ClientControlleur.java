@@ -45,9 +45,9 @@ public class ClientControlleur {
 	    model.addAttribute("client", clientRepo.save(client));
 	    return "accueil";
 	}
-	List<Sport> sports = sportRepo.findAll();
-	model.addAttribute("sports", sports);
-	return "inscription";
+	// List<Sport> sports = sportRepo.findAll();
+	// model.addAttribute("sports", sports);
+	return "accueil";
     }
 
     private static void encodePassword(Client client) {
@@ -79,6 +79,7 @@ public class ClientControlleur {
     // return "modifierclient";
     // }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/afficherliste")
     public String afficherListe(Model model) {
 	List<Client> clients = clientRepo.findAll();

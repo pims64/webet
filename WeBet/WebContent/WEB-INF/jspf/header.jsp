@@ -7,6 +7,8 @@
 <title></title>
 <link rel="stylesheet" href="<c:url value="/static/css/bootstrap.min.css" />">
 <link href="<c:url value="/static/css/style.css" />" rel="stylesheet">
+  <script src="<c:url value="/static/js/jquery.min.js" />"></script>
+  <script src="<c:url value="/static/js/bootstrap.min.js" />"></script>
 </head>
 <body>
 <div class="container">
