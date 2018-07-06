@@ -23,9 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-	http.authorizeRequests().antMatchers("/static/**").permitAll().anyRequest().authenticated().and().formLogin()
-		.loginPage("/utilisateurcontrolleur/goToAuth").loginProcessingUrl("/login")
-		.defaultSuccessUrl("/hellocontrolleur/goToSite", true)
+	http.authorizeRequests().antMatchers("/static/**", "/index.jsp", "/hellocontrolleur/**").permitAll()
+		.anyRequest().authenticated().and().formLogin().loginPage("/utilisateurcontrolleur/goToAuth")
+		.loginProcessingUrl("/login").defaultSuccessUrl("/hellocontrolleur/goToSite", true)
 		.failureUrl("/utilisateurcontrolleur/goToAuth?error=true").permitAll().and().logout()
 		.invalidateHttpSession(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/utilisateurcontrolleur/goToAuth?logout=true").permitAll();
