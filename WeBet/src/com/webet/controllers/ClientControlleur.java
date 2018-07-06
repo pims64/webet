@@ -48,7 +48,6 @@ public class ClientControlleur {
 	List<Sport> sports = sportRepo.findAll();
 	model.addAttribute("sports", sports);
 	return "inscription";
-
     }
 
     private static void encodePassword(Client client) {
