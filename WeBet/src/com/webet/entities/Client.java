@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Client {
@@ -27,7 +28,7 @@ public class Client {
     @NotEmpty(message = "{error.client.prenom.obligatoire}")
     private String prenom;
 
-    // @NotEmpty(message = "{error.client.age.obligatoire}")
+    @NotNull(message = "{error.client.age.obligatoire}")
     @Min(value = 18, message = "{error.client.age.superieur18}")
     private Integer age;
 
@@ -42,6 +43,7 @@ public class Client {
     @OneToMany
     private List<Sport> listeSports;
 
+    @NotNull(message = "{error.client.montantMax.obligatoire}")
     private Double montantMaxPari;
 
     @Valid
