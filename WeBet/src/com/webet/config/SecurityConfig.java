@@ -22,8 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-	// Pour activer l'authentification sur les web services, enlever le
-	// matcher "/api/**"
+
 	http.authorizeRequests().antMatchers("/static/**").permitAll().anyRequest().authenticated().and().formLogin()
 		.loginPage("/utilisateurcontrolleur/goToAuth").loginProcessingUrl("/login")
 		.defaultSuccessUrl("/clientcontroller/goToSite", true)
