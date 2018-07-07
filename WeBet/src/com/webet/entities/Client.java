@@ -44,7 +44,7 @@ public class Client {
     private List<Sport> listeSports;
 
     @NotNull(message = "{error.client.montantMax.obligatoire}")
-    private Double montantMaxPari;
+    private Double montantMaxPari = 500.0;
 
     @Valid
     @OneToOne(cascade = { CascadeType.ALL })

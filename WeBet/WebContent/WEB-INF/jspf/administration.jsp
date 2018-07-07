@@ -13,4 +13,8 @@
 	<c:import url="clients.jsp" />
 </div>
 
+<div class="container-fluid bg-3 text-center">
+	<c:import url="rencontres.jsp" />
+</div>
+
 <c:import url="footer.jsp" />

@@ -20,7 +20,6 @@ import com.webet.dao.IClientJpaRepository;
 import com.webet.dao.ISportJpaRepository;
 import com.webet.entities.Client;
 import com.webet.entities.ERole;
-import com.webet.entities.Sport;
 
 @Controller
 @RequestMapping("/clientcontrolleur")
@@ -47,7 +46,7 @@ public class ClientControlleur {
 	}
 	// List<Sport> sports = sportRepo.findAll();
 	// model.addAttribute("sports", sports);
-	return "accueil";
+	return "inscription";
     }
 
     private static void encodePassword(Client client) {
@@ -57,26 +56,34 @@ public class ClientControlleur {
 	client.getUtilisateur().setMotDePasse(encodedPassword);
     }
 
-    @GetMapping("/goToModifier/{id}")
-    public String goToModifier(@PathVariable("id") Long id, Model model) {
-	Client client = clientRepo.getOne(id);
+    @Secured("ROLE_USER")
+    @GetMapping("/modifier/{id}")
+    public String modifier(@PathVariable("id") Long id, Model model) {
+	if (id != AuthHelper.getPrincipal().getClient().getId()) {
+	    return "redirect:/hellocontrolleur/goToSite";
+	}
+	Client client = clientRepo.getOne(AuthHelper.getPrincipal().getClient().getId());
 	model.addAttribute("client", client);
-	List<Sport> sports = sportRepo.findAll();
-	model.addAttribute("sports", sports);
-	model.addAttribute("roles", ERole.values());
-	return "modifierclient";
+	// List<Sport> sports = sportRepo.findAll();
+	// model.addAttribute("sports", sports);
+	// model.addAttribute("roles", ERole.values());
+	return "modification";
     }
 
+    // @Secured("ROLE_USER")
     // @PostMapping("/modifier")
     // public String modifier(@Valid @ModelAttribute(value = "client") Client
     // client, BindingResult result, Model model) {
-    // if (!result.hasErrors()) {
-    // encodePassword(client);
-    // clientRepo.save(client);
-    // }
-    // List<Sport> sports = sportRepo.findAll();
-    // model.addAttribute("sports", sports);
-    // return "modifierclient";
+    // // Long id = AuthHelper.getPrincipal().getClient().getId();
+    // // client = clientRepo.getOne(id);
+    // // model.addAttribute("client", client);
+    // // if (!result.hasErrors()) {
+    // // encodePassword(client);
+    // // clientRepo.save(client);
+    // // }
+    // // List<Sport> sports = sportRepo.findAll();
+    // // model.addAttribute("sports", sports);
+    // return "modification";
     // }
 
     @Secured("ROLE_ADMIN")

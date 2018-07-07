@@ -26,16 +26,23 @@
 				<label for="username" class="control-label col-sm-2"><spring:message
 						code="login.username" /></label>
 				<div class="col-sm-10">
-					<input type="text" name="username" value=""
-						placeholder="<spring:message code="login.username" />" class="form-control">
+				
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input type="text" name="username" value=""
+							placeholder="<spring:message code="login.username" />" class="form-control">
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="password" class="control-label col-sm-2"><spring:message
-						code="login.password" /></label>
+							code="login.password" /></label>
 				<div class="col-sm-10">
-					<input type="password" name="password" value=""
-						placeholder="<spring:message code="login.password" />" class="form-control">
+					<div class="input-group">
+		    			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+						<input type="password" name="password" value=""
+								placeholder="<spring:message code="login.password" />" class="form-control">
+					</div>
 				</div>
 			</div>
 			<div class="form-group">

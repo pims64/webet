@@ -1,15 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <c:import url="header.jsp" />
 
 
 
 <div class="container-fluid bg-3 text-center">
-	<h2 class="h2-admin">
-		<spring:message code="client.header" />
-	</h2>
+
 	<div class="row">
 	<div class="col-sm-3"></div>
 	<div class="col-sm-6">
@@ -20,6 +17,12 @@
 
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
+			<form:hidden path="client.id"/>
+			<form:hidden path="client.age"/>
+			<form:hidden path="client.utilisateur.id"/>
+			<form:hidden path="client.utilisateur.email"/>
+			<form:hidden path="client.utilisateur.role"/>
+			
 
 			<div class="form-group">
 				<form:label path="client.nom" cssClass="control-label col-sm-2">
@@ -45,17 +48,6 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
-				<form:label path="client.utilisateur.email" cssClass="control-label col-sm-2">
-					<spring:message code="client.utilisateur.email" />
-					<span class="required">*</span>
-				</form:label>
-				<div class="col-sm-10">
-					<form:input path="client.utilisateur.email" cssClass="form-control"/>
-					&nbsp;
-					<form:errors path="client.utilisateur.email" cssClass="errors" />
-				</div>
-			</div>
 			
 			<div class="form-group">
 				<form:label path="client.utilisateur.motDePasse" cssClass="control-label col-sm-2">
@@ -69,17 +61,6 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				<form:label path="client.age" cssClass="control-label col-sm-2">
-					<spring:message code="client.age" />
-					<span class="required">*</span>
-				</form:label>
-				<div class="col-sm-10">
-					<form:input path="client.age" cssClass="form-control"/>
-					&nbsp;
-					<form:errors path="client.age" cssClass="errors" />
-				</div>
-			</div>
 
 			<div class="form-group">
 				<form:label path="client.montantMaxPari" cssClass="control-label col-sm-2">
@@ -92,14 +73,6 @@
 					<form:errors path="client.montantMaxPari" cssClass="errors" />
 				</div>
 			</div>
-
-			<%-- 		<form:label path="client.utilisateur.role"><spring:message code="client.role" /></form:label>
-		<form:select path="client.utilisateur.role">
-			<form:option value="" label="" />
-			<form:options items="${roles}" itemValue="name" itemLabel="name" />
-		</form:select>&nbsp;<form:errors path="client.utilisateur.role" cssClass="errors" />
-		<br> --%>
-			<form:hidden path="client.utilisateur.role" value="ROLE_USER" />
 			
 			<div class="form-group">
 				<form:label path="client.adresse.rue" cssClass="control-label col-sm-2">

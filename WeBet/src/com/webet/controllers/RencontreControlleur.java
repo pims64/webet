@@ -35,7 +35,7 @@ public class RencontreControlleur {
     public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	rencontreRepo.save(rencontre);
 	model.addAttribute("rencontre", new Rencontre());
-	return "creerrencontre";
+	return "redirect:/admincontrolleur/goToAdmin";
 
     }
 

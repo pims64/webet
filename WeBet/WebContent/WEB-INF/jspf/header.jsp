@@ -35,9 +35,10 @@
 					<li><a href="#">Gallery</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul> -->
+				<%-- <sec:authentication property="principal.client.id" /> --%>
 				<ul class="nav navbar-nav navbar-right">
 					<sec:authorize access="hasAnyRole('ROLE_USER')">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
+						<li><a href="${pageContext.request.contextPath }/clientcontrolleur/modifier/<sec:authentication property="principal.client.id" />"><span class="glyphicon glyphicon-user"></span>
 								<spring:message code="menu.compte" /></a></li>
 					</sec:authorize>
 					<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
@@ -88,18 +89,24 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Connexion</h4>
+        <h4 class="modal-title"><spring:message code="modal.connexion.titre" /></h4>
       </div>
       <div class="modal-body">
         <form method="POST" action="<c:url value="/login" />">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	<div class="form-group">
 		<label for="username"><spring:message code="login.username" /></label>
-		<input type="text" name="username" value="" placeholder="Email" class="form-control">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			<input type="text" name="username" value="" placeholder="Email" class="form-control">
+		</div>
 	</div>
 	<div class="form-group">
 		<label for="password"><spring:message code="login.password" /></label>
-		<input type="password" name="password" value="" placeholder="Mot de passe" class="form-control">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+			<input type="password" name="password" value="" placeholder="Mot de passe" class="form-control">
+		</div>
 	</div>
 	<input type="submit" value="<spring:message code="login.submit" />" class="btn btn-default"/>
       </form>

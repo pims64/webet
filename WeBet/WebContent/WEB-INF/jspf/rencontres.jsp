@@ -6,24 +6,43 @@
 	
 <hr/>
 	<h2 class="h2-admin">
-		<spring:message code="admin.equipe.titre" />
+		<spring:message code="admin.rencontre.titre" />
 	</h2>
-	
-<hr/>
 <div class="row">
 	<div class="col-sm-2">
-			<span class="row-header"><spring:message code="admin.equipe.creer" /></span>
+			<span class="row-header"><spring:message code="admin.rencontre.creer" /></span>
 	</div>
 	<div class="col-sm-8">
 		<form method="POST"
 			action="${pageContext.request.contextPath}/equipecontrolleur/creer"
-			modelAttribute="equipe" class="form-inline">
+			modelAttribute="rencontre" class="form-inline">
 
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			<form:hidden path="equipe.id" />
+			<form:hidden path="rencontre.id" />
+			
 			<div class="form-group">
-				<form:label path="equipe.nom">
+				<form:label path="rencontre.equipeDomicile.nom">
+					<spring:message code="rencontre.equipeDomicile" /><span class="required">*</span>
+				</form:label>
+			<form:select path="rencontre.equipeDomicile.id" cssClass="form-control">
+					<form:options items="${equipes}" itemValue="id" itemLabel="nom" />
+				</form:select>
+			</div>
+			
+			<div class="form-group">
+				<form:label path="rencontre.equipeVisiteur.nom">
+					<spring:message code="rencontre.equipeVisiteur" /><span class="required">*</span>
+				</form:label>
+			<form:select path="rencontre.equipeVisiteur.id" cssClass="form-control">
+					<form:options items="${equipes}" itemValue="id" itemLabel="nom" />
+			</form:select>
+			</div>
+			
+			
+			
+			<%-- <div class="form-group">
+				<form:label path="rencontre.nom">
 					<spring:message code="equipe.nom" />
 					<span class="required">*</span>
 				</form:label>
@@ -42,7 +61,7 @@
 				</form:select>
 				&nbsp;
 				<form:errors path="equipe.sport.nom" cssClass="errors" />
-			</div>
+			</div> --%>
 			<input type="submit"
 				value="<spring:message code="equipe.creer.submit" />"
 				class="btn btn-default" />
@@ -52,36 +71,5 @@
 	<div class="col-sm-2"></div>
 </div>
 <hr/>
-<div class="row">
-
-	<div class="col-sm-2">
-
-			<span class="row-header"><spring:message code="admin.equipe.liste" /></span>
-	</div>
-	<div class="col-sm-8">
-
-		<table class="table">
-			<tr>
-				<th><spring:message code="equipe.table.id" /></th>
-				<th><spring:message code="equipe.table.nom" /></th>
-				<th><spring:message code="equipe.table.sport" /></th>
-				<th><spring:message code="equipe.table.supprimer" /></th>
-			</tr>
-			<tbody>
-				<c:forEach items="${equipes}" var="equipe">
-					<tr>
-						<td>${equipe.id }</td>
-						<td>${equipe.nom }</td>
-						<td>${equipe.sport.nom }</td>
-						<td><a
-							href="<c:url value="/equipecontrolleur/supprimer/${equipe.id}" />">
-								<spring:message code="equipe.supprimer" />
-						</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
-
-	<div class="col-sm-2"></div>
-</div>
+<hr/>
+<hr/>

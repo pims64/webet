@@ -25,3 +25,9 @@ th{
 	font-family: 'Galada', cursive;
 	font-size: 40px;
 }
+
+.errors {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
+}
