@@ -5,24 +5,50 @@
 	prefix="sec"%>
 <c:import url="header.jsp" />
 
-<h2>
-	<spring:message code="login.title" />
-</h2>
-<c:if test="${param.error}">
-	<span class="error"><spring:message code="login.inconnu" /></span>
-</c:if>
-<c:if test="${param.logout}">
-	<span class="error"><spring:message code="login.logout" /></span>
-</c:if>
-<form method="POST" action="<c:url value="/login" />">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	<label for="username"><spring:message code="login.username" /></label>
-	<input type="text" name="username" value="" placeholder="Email">
-	<br>
-	<label for="password"><spring:message code="login.password" /></label>
-	<input type="password" name="password" value="" placeholder="Mot de passe"> <br>
-	<input type="submit" value="<spring:message code="login.submit" />" />
-</form>
-
+<div class="container-fluid bg-3 text-center">
+	<h2 class="h2-admin">
+		<spring:message code="login.title" />
+	</h2>
+	<hr />
+	<div class="row">
+	<div class="col-sm-2"></div>
+		<c:if test="${param.error}">
+			<span class="error"><spring:message code="login.inconnu" /></span>
+		</c:if>
+		<c:if test="${param.logout}">
+			<span class="error"><spring:message code="login.logout" /></span>
+		</c:if>
+		<form method="POST" action="<c:url value="/login" />"
+			class="form-horizontal col-sm-8">
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+			<div class="form-group">
+				<label for="username" class="control-label col-sm-2"><spring:message
+						code="login.username" /></label>
+				<div class="col-sm-10">
+					<input type="text" name="username" value=""
+						placeholder="<spring:message code="login.username" />" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="control-label col-sm-2"><spring:message
+						code="login.password" /></label>
+				<div class="col-sm-10">
+					<input type="password" name="password" value=""
+						placeholder="<spring:message code="login.password" />" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="submit" value="<spring:message code="login.submit" />"
+						class="btn btn-default form-control" />
+				</div>
+			</div>
+	
+		</form>
+		
+	<div class="col-sm-2"></div>
+	</div>
+</div>
 
 <c:import url="footer.jsp" />

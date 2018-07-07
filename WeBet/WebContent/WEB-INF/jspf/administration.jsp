@@ -5,16 +5,11 @@
 <c:import url="header.jsp" />
 
 
-<a href="<c:url value="/logout" />"><spring:message
-		code="menu.logout" /></a>
-<h1>ADMINISTRATION</h1>
-
-
-<div>
+<div class="container-fluid bg-3 text-center">
 	<c:import url="equipes.jsp" />
 </div>
 
-<div>
+<div class="container-fluid bg-3 text-center">
 	<c:import url="clients.jsp" />
 </div>
 

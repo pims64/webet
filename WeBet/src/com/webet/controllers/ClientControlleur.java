@@ -92,7 +92,7 @@ public class ClientControlleur {
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	clientRepo.deleteById(id);
-	return "redirect:/clientcontrolleur/afficherliste";
+	return "redirect:/admincontrolleur/goToAdmin";
     }
 
 }
