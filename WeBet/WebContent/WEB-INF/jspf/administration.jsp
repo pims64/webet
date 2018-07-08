@@ -4,6 +4,9 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <c:import url="header.jsp" />
 
+<div class="container-fluid bg-3 text-center">
+	<c:import url="rencontres.jsp" />
+</div>
 
 <div class="container-fluid bg-3 text-center">
 	<c:import url="equipes.jsp" />
@@ -13,8 +16,5 @@
 	<c:import url="clients.jsp" />
 </div>
 
-<div class="container-fluid bg-3 text-center">
-	<c:import url="rencontres.jsp" />
-</div>
 
 <c:import url="footer.jsp" />
