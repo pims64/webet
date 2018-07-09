@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -20,7 +19,6 @@ public class Equipe {
 
     private String nomImg;
 
-    @Valid
     @ManyToOne
     private Sport sport;
 

@@ -19,6 +19,8 @@
 			action="${pageContext.request.contextPath}/equipecontrolleur/creer"
 			modelAttribute="equipe" class="form-inline">
 
+
+			<!-- NOM DE L'EQUIPE -->
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 			<form:hidden path="equipe.id" />
@@ -30,22 +32,25 @@
 				<form:input path="equipe.nom" cssClass="form-control"
 					placeholder="nom de l'équipe" />
 				&nbsp;
-				<form:errors path="equipe.nom" cssClass="errors" />
 			</div>
+			
+			
+			<!-- SPORT PRATIQUE -->
 			<div class="form-group">
-				<form:label path="equipe.sport.nom">
+				<form:label path="equipe.sport.id">
 					<spring:message code="equipe.sport" /><span class="required">*</span>
 				</form:label>
 				<form:select path="equipe.sport.id" cssClass="form-control">
-					<form:option value="" label="" />
 					<form:options items="${sports}" itemValue="id" itemLabel="nom" />
 				</form:select>
 				&nbsp;
-				<form:errors path="equipe.sport.nom" cssClass="errors" />
+				<form:errors path="equipe.sport.id" cssClass="errors" />
 			</div>
 			<input type="submit"
 				value="<spring:message code="equipe.creer.submit" />"
-				class="btn btn-default" />
+				class="btn btn-default" /><br>
+				
+				<form:errors path='equipe.nom' cssClass="errors" />
 		</form>
 	</div>
 

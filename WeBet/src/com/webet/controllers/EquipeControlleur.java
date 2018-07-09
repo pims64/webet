@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.webet.dao.IClientJpaRepository;
 import com.webet.dao.IEquipeJpaRepository;
+import com.webet.dao.ISportJpaRepository;
 import com.webet.entities.Equipe;
 
 @Secured("ROLE_ADMIN")
@@ -24,7 +26,13 @@ import com.webet.entities.Equipe;
 public class EquipeControlleur {
 
     @Autowired
+    private ISportJpaRepository sportRepo;
+
+    @Autowired
     private IEquipeJpaRepository equipeRepo;
+
+    @Autowired
+    private IClientJpaRepository clientRepo;
 
     // @GetMapping("/goToCreer")
     // public String goToCreer(@ModelAttribute(value = "equipe") Equipe equipe,
@@ -34,13 +42,16 @@ public class EquipeControlleur {
     // }
 
     @PostMapping("/creer")
-    public String creer(@Valid @ModelAttribute(value = "equipe") Equipe equipe, Model model, BindingResult result) {
+    public String creer(@Valid @ModelAttribute(value = "equipe") Equipe equipe, BindingResult result, Model model) {
+
 	if (!result.hasErrors()) {
 	    equipeRepo.save(equipe);
 	    model.addAttribute("equipe", new Equipe());
 	}
 
-	return "redirect:/admincontrolleur/goToAdmin";
+	ControlleurHelper.populateAdmin(model, clientRepo, equipeRepo, sportRepo);
+
+	return "administration";
 
     }
 
