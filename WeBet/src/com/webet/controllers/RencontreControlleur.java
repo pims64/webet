@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.webet.dao.IPariJpaRepository;
 import com.webet.dao.IRencontreJpaRepository;
-import com.webet.entities.Equipe;
+import com.webet.entities.Pari;
 import com.webet.entities.Rencontre;
 
 @Secured("ROLE_ADMIN")
@@ -29,8 +30,11 @@ public class RencontreControlleur {
     @Autowired
     private IRencontreJpaRepository rencontreRepo;
 
+    @Autowired
+    private IPariJpaRepository pariRepo;
+
     @GetMapping("/goToCreer")
-    public String goToCreer(@ModelAttribute(value = "rencontre") Equipe equipe, Model model) {
+    public String goToCreer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	model.addAttribute("isGoToCreer", true);
 	return "creerrencontre";
     }
@@ -61,7 +65,7 @@ public class RencontreControlleur {
 	return "listerencontre";
     }
 
-    @GetMapping("/afficherlisteAVenir")
+    @GetMapping("/afficherListeAVenir")
     public String afficherListeAVenir(Model model) {
 	Date dateCourante = new Date();
 	List<Rencontre> rencontres = rencontreRepo.chercheRencontresAVenir(dateCourante);
@@ -74,5 +78,34 @@ public class RencontreControlleur {
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);
 	return "redirect:/rencontrecontrolleur/afficherListe";
+    }
+
+    @GetMapping("/resultat") // Validation des paris associés à une rencontre après publication des résultats
+    public String resultat(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
+	String resultatRencontre;
+	if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() > 0)
+	    resultatRencontre = "VICTOIRE_DOMICILE";
+	else if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() < 0)
+	    resultatRencontre = "VICTOIRE_VISITEUR";
+	else
+	    resultatRencontre = "NUL";
+	List<Pari> listeParis = pariRepo.findByRencontreId(rencontre.getId());
+	for (Pari pari : listeParis) {
+	    if (resultatRencontre.equals(pari.getChoixPari().getName())) {
+		pari.setResultat(true);
+	    } else {
+		pari.setResultat(false);
+	    }
+
+	}
+
+	// for (int i = 0; i < listeParis.size(); i++) {
+	// if (resultatRencontre.equals(listeParis.get(i).getChoixPari().getName()))
+	// listeParis.get(i).setResultat(true);
+	// else
+	// listeParis.get(i).setResultat(false);
+	// }
+
+	return "rencontreDetail";
     }
 }
