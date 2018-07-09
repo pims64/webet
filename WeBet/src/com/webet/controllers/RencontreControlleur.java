@@ -1,12 +1,16 @@
 
 package com.webet.controllers;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +36,13 @@ public class RencontreControlleur {
     }
 
     @PostMapping("/creer")
-    public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
-	rencontreRepo.save(rencontre);
-	model.addAttribute("rencontre", new Rencontre());
+    public String creer(@Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result,
+	    Model model) {
+
+	if (!result.hasErrors()) {
+	    rencontreRepo.save(rencontre);
+	    model.addAttribute("rencontre", new Rencontre());
+	}
 	return "redirect:/admincontrolleur/goToAdmin";
 
     }
@@ -51,6 +59,14 @@ public class RencontreControlleur {
 	List<Rencontre> rencontres = rencontreRepo.findAll();
 	model.addAttribute("rencontres", rencontres);
 	return "listerencontre";
+    }
+
+    @GetMapping("/afficherlisteAVenir")
+    public String afficherListeAVenir(Model model) {
+	Date dateCourante = new Date();
+	List<Rencontre> rencontres = rencontreRepo.chercheRencontresAVenir(dateCourante);
+	model.addAttribute("rencontres", rencontres);
+	return "listerencontreavenir";
     }
 
     @SuppressWarnings("unused")

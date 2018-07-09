@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Rencontre {
@@ -15,20 +17,30 @@ public class Rencontre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "{error.rencontre.equipeVisiteur.obligatoire}")
     @ManyToOne
     private Equipe equipeVisiteur;
 
+    @NotNull(message = "{error.rencontre.equipeDomicile.obligatoire}")
     @ManyToOne
     private Equipe equipeDomicile;
 
+    @NotNull(message = "{error.rencontre.dateDebut.obligatoire}")
     private Date dateDebut;
 
+    @NotNull(message = "{error.rencontre.dateFin.obligatoire}")
     private Date dateFin;
 
+    @NotNull(message = "{error.rencontre.coteVisiteur.obligatoire}")
+    @Min(value = 1, message = "{error.rencontre.coteVisiteur.superieur1}")
     private Double coteVisiteur;
 
+    @NotNull(message = "{error.rencontre.coteDomicile.obligatoire}")
+    @Min(value = 1, message = "{error.rencontre.coteDomicile.superieur1}")
     private Double coteDomicile;
 
+    @NotNull(message = "{error.rencontre.coteNul.obligatoire}")
+    @Min(value = 1, message = "{error.rencontre.coteNul.superieur1}")
     private Double coteNul;
 
     private Integer scoreVisiteur;
