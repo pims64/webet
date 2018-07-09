@@ -2,17 +2,22 @@ package com.webet.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.webet.dao.IClientJpaRepository;
 import com.webet.dao.IEquipeJpaRepository;
+import com.webet.dao.ISportJpaRepository;
 import com.webet.entities.Equipe;
 
 @Secured("ROLE_ADMIN")
@@ -21,20 +26,32 @@ import com.webet.entities.Equipe;
 public class EquipeControlleur {
 
     @Autowired
+    private ISportJpaRepository sportRepo;
+
+    @Autowired
     private IEquipeJpaRepository equipeRepo;
 
-    @GetMapping("/goToCreer")
-    public String goToCreer(@ModelAttribute(value = "equipe") Equipe equipe, Model model) {
-	model.addAttribute("isGoToCreer", true);
-	return "creerequipe";
-    }
+    @Autowired
+    private IClientJpaRepository clientRepo;
+
+    // @GetMapping("/goToCreer")
+    // public String goToCreer(@ModelAttribute(value = "equipe") Equipe equipe,
+    // Model model) {
+    // model.addAttribute("isGoToCreer", true);
+    // return "creerequipe";
+    // }
 
     @PostMapping("/creer")
-    public String creer(@ModelAttribute(value = "equipe") Equipe equipe, Model model) {
-	equipeRepo.save(equipe);
-	model.addAttribute("equipe", new Equipe());
+    public String creer(@Valid @ModelAttribute(value = "equipe") Equipe equipe, BindingResult result, Model model) {
 
-	return "redirect:/admincontrolleur/goToAdmin";
+	if (!result.hasErrors()) {
+	    equipeRepo.save(equipe);
+	    model.addAttribute("equipe", new Equipe());
+	}
+
+	ControlleurHelper.populateAdmin(model, clientRepo, equipeRepo, sportRepo);
+
+	return "administration";
 
     }
 

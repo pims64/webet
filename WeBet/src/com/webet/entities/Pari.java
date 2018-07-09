@@ -1,10 +1,13 @@
 package com.webet.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Pari {
@@ -19,9 +22,12 @@ public class Pari {
     @ManyToOne
     private Rencontre rencontre;
 
+    @NotNull(message = "{error.pari.sommePariee.obligatoire}")
     private Double sommePariee;
 
-    private Integer choixPari;
+    @NotNull(message = "{error.pari.choixPari.obligatoire}")
+    @Enumerated(EnumType.STRING)
+    private EChoixPari choixPari;
 
     public Pari() {
     }
@@ -64,11 +70,11 @@ public class Pari {
 	this.sommePariee = sommePariee;
     }
 
-    public Integer getChoixPari() {
+    public EChoixPari getChoixPari() {
 	return choixPari;
     }
 
-    public void setChoixPari(Integer choixPari) {
+    public void setChoixPari(EChoixPari choixPari) {
 	this.choixPari = choixPari;
     }
 

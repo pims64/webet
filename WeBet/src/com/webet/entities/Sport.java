@@ -12,6 +12,7 @@ public class Sport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // @NotEmpty(message = "{error.sport.nom.obligatoire}")
     private String nom;
 
     public Sport() {

@@ -64,7 +64,7 @@
 		</div>
 	</nav>
 
-	<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<div class="jumbotron">
 			<div class="container text-center">
 				<h1><spring:message code="jumbotron.admin" /></h1>
