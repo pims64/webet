@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.webet.dao.IEquipeJpaRepository;
 import com.webet.dao.IRencontreJpaRepository;
-import com.webet.dao.ISportJpaRepository;
 import com.webet.entities.Equipe;
 import com.webet.entities.Rencontre;
 import com.webet.entities.Sport;
@@ -30,7 +30,7 @@ public class RencontreControlleur {
     private IRencontreJpaRepository rencontreRepo;
 
     @Autowired
-    private ISportJpaRepository sportsRepo;
+    private IEquipeJpaRepository equipeRepo;
 
     @GetMapping("/goToCreer")
     public String goToCreer(@ModelAttribute(value = "rencontre") Equipe equipe, Model model) {
@@ -79,7 +79,6 @@ public class RencontreControlleur {
 	return "listerencontreavenir";
     }
 
-    @SuppressWarnings("unused")
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);
@@ -88,9 +87,8 @@ public class RencontreControlleur {
 
     @PostMapping("/goToDetail")
     public String goToDetail(@ModelAttribute(value = "sport") Sport sport, Model model) {
-	model.addAttribute("equipes", sportsRepo.findAll());
-	model.addAttribute("rencontres", rencontreRepo.findAll());
-	return "rencontredetail";
-
+	model.addAttribute("equipes", equipeRepo.findBySportId(sport.getId()));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sport.getId()));
+	return "rencontreDetail";
     }
 }
