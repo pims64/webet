@@ -24,4 +24,6 @@ public interface IRencontreJpaRepository extends JpaRepository<Rencontre, Long> 
     @Query("select r from Rencontre r where r.dateFin < :dateCourante and (r.scoreVisiteur = null or r.scoreDomicile = null)")
     public List<Rencontre> chercheRencontresFiniesSansScore(@Param("dateCourante") Date dateCourante);
 
+    public List<Rencontre> findByEquipeDomicileSportId(Long id);
+
 }

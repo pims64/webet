@@ -4,8 +4,6 @@ package com.webet.controllers;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -17,10 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.webet.dao.IEquipeJpaRepository;
 import com.webet.dao.IPariJpaRepository;
 import com.webet.dao.IRencontreJpaRepository;
 import com.webet.entities.Pari;
 import com.webet.entities.Rencontre;
+import com.webet.entities.Sport;
 
 @Secured("ROLE_ADMIN")
 @Controller
@@ -33,6 +33,9 @@ public class RencontreControlleur {
     @Autowired
     private IPariJpaRepository pariRepo;
 
+    @Autowired
+    private IEquipeJpaRepository equipeRepo;
+
     @GetMapping("/goToCreer")
     public String goToCreer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	model.addAttribute("isGoToCreer", true);
@@ -40,15 +43,22 @@ public class RencontreControlleur {
     }
 
     @PostMapping("/creer")
-    public String creer(@Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result,
-	    Model model) {
-
+    public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result, Model model) {
 	if (!result.hasErrors()) {
-	    rencontreRepo.save(rencontre);
-	    model.addAttribute("rencontre", new Rencontre());
+	    if (rencontre.getEquipeDomicile().getId() != rencontre.getEquipeVisiteur().getId()) {
+		Date dateDebut = rencontre.getDateDebut();
+		Date dateFin = rencontre.getDateFin();
+		if (dateDebut != null && dateFin != null) {
+		    Date dateActuelle = new Date();
+		    if (dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) {
+			rencontreRepo.save(rencontre);
+		    }
+		}
+	    }
 	}
-	return "redirect:/admincontrolleur/goToAdmin";
 
+	model.addAttribute("rencontre", new Rencontre());
+	return "redirect:/admincontrolleur/goToAdmin";
     }
 
     @GetMapping("/goToModifier/{id}")
@@ -73,11 +83,17 @@ public class RencontreControlleur {
 	return "listerencontreavenir";
     }
 
-    @SuppressWarnings("unused")
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);
-	return "redirect:/rencontrecontrolleur/afficherListe";
+	return "redirect:/admincontrolleur/goToAdmin";
+    }
+
+    @PostMapping("/goToDetail")
+    public String goToDetail(@ModelAttribute(value = "sport") Sport sport, Model model) {
+	model.addAttribute("equipes", equipeRepo.findBySportId(sport.getId()));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sport.getId()));
+	return "rencontreDetail";
     }
 
     @GetMapping("/resultat") // Validation des paris associés à une rencontre après publication des résultats
