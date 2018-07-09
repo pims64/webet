@@ -3,17 +3,16 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 	
-	Détails des recontres par Sport
-
+	<c:import url="header.jsp" />
+	<a href="${pageContext.request.contextPath}/admincontrolleur/goToAdmin"><spring:message code="menu.retour.admin" /></a><br>
 	
 
 	<hr/>
 	
-	<c:forEach items="${equipesSport}" var="sport">
 	
 	<div class="row">
 		<div class="col-sm-2">
-			<span class="row-header"><spring:message code="admin.rencontre.creer" /></span>
+			<span class="row-header">${sport.nom}</span>
 		</div>
 		<div class="col-sm-8">
 		<h3><c:out value="${sport.key.nom}"/></h3>
@@ -109,7 +108,6 @@
 	<div class="col-sm-2"></div>
 	
 	</div>
-	</c:forEach>
 	
 <hr/>
 	<div class="row">

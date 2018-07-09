@@ -14,6 +14,7 @@
 	<div class="col-sm-6">
 	<form method="POST" action="${pageContext.request.contextPath}/rencontrecontrolleur/goToDetail"
 					modelAttribute="sport" class="form-horizontal">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<div class="form-group">
 			<form:label path="sport.nom" cssClass="control-label col-sm-2">
 				<spring:message code="sport.nom" />
