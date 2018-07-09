@@ -1,6 +1,7 @@
 
 package com.webet.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,19 @@ public class RencontreControlleur {
 
     @PostMapping("/creer")
     public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
-	rencontreRepo.save(rencontre);
+	if (rencontre.getEquipeDomicile().getId() != rencontre.getEquipeVisiteur().getId()) {
+	    Date dateDebut = rencontre.getDateDebut();
+	    Date dateFin = rencontre.getDateFin();
+	    if (dateDebut != null && dateFin != null) {
+		Date dateActuelle = new Date();
+		if (dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) {
+		    rencontreRepo.save(rencontre);
+		}
+	    }
+	}
+
 	model.addAttribute("rencontre", new Rencontre());
 	return "redirect:/admincontrolleur/goToAdmin";
-
     }
 
     @GetMapping("/goToModifier/{id}")
@@ -57,6 +67,6 @@ public class RencontreControlleur {
     @GetMapping("/supprimer/{id}")
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);
-	return "redirect:/rencontrecontrolleur/afficherListe";
+	return "redirect:/admincontrolleur/goToAdmin";
     }
 }
