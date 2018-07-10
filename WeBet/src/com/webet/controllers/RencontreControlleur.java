@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webet.dao.IEquipeJpaRepository;
 import com.webet.dao.IPariJpaRepository;
@@ -47,8 +48,13 @@ public class RencontreControlleur {
     }
 
     @PostMapping("/creer")
-    public String creer(@Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result,
-	    Model model) {
+    public String creer(@RequestParam("isResultNeeded") boolean isResultNeeded,
+	    @Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result, Model model) {
+
+	if (isResultNeeded) {
+	    resultat(rencontre);
+	}
+
 	if (!result.hasErrors()) {
 	    if (rencontre.getEquipeDomicile().getId() != rencontre.getEquipeVisiteur().getId()) {
 		Date dateDebut = rencontre.getDateDebut();
@@ -57,7 +63,7 @@ public class RencontreControlleur {
 		    Date dateActuelle = new Date();
 		    dateActuelle = DateUtils.setSeconds(dateActuelle, 0);
 		    dateActuelle = DateUtils.setMilliseconds(dateActuelle, 0);
-		    if (dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) {
+		    if ((dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) || isResultNeeded) {
 			rencontreRepo.save(rencontre);
 		    } else {
 			result.rejectValue("dateDebut", "error.rencontre.dateDebut.incorrecte");
@@ -76,7 +82,18 @@ public class RencontreControlleur {
 
     @GetMapping("/modifier/{sportId}/{rencontreId}")
     public String modifier(@PathVariable("sportId") Long sportId, @PathVariable("rencontreId") Long id, Model model) {
+	// Récupération de la rencontre
 	Rencontre rencontre = rencontreRepo.getOne(id);
+
+	// Formatage de la date actuelle
+	Date dateActuelle = new Date();
+	dateActuelle = DateUtils.setSeconds(dateActuelle, 0);
+	dateActuelle = DateUtils.setMilliseconds(dateActuelle, 0);
+
+	// Affectation du booléen si le résultat est attendu ou non
+	boolean isResultNeeded = dateActuelle.after(rencontre.getDateFin());
+
+	model.addAttribute("isResultNeeded", isResultNeeded);
 	model.addAttribute("rencontre", rencontre);
 	populateRencontreDetail(sportId, model);
 	return "rencontreDetail";
@@ -110,11 +127,13 @@ public class RencontreControlleur {
 	Long sportId = sport.getId();
 	populateRencontreDetail(sportId, model);
 	model.addAttribute("rencontre", new Rencontre());
+	model.addAttribute("isResultNeeded", false);
 	return "rencontreDetail";
     }
 
-    @GetMapping("/resultat") // Validation des paris associés à une rencontre après publication des résultats
-    public String resultat(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
+    // @GetMapping("/resultat") // Validation des paris associés à une rencontre
+    // après publication des résultats
+    private void resultat(Rencontre rencontre) {
 	EChoixPari resultatRencontre;
 	if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() > 0) {
 	    resultatRencontre = EChoixPari.VICTOIRE_DOMICILE;
@@ -126,19 +145,7 @@ public class RencontreControlleur {
 	List<Pari> listeParis = pariRepo.findByRencontreId(rencontre.getId());
 	for (Pari pari : listeParis) {
 	    if (resultatRencontre.equals(pari.getChoixPari())) {
-		switch (resultatRencontre) {
-		case VICTOIRE_DOMICILE:
-		    pari.setGain(rencontre.getCoteDomicile() * pari.getSommePariee());
-		    break;
-		case VICTOIRE_VISITEUR:
-		    pari.setGain(rencontre.getCoteVisiteur() * pari.getSommePariee());
-		    break;
-		case NUL:
-		    pari.setGain(rencontre.getCoteNul() * pari.getSommePariee());
-		    break;
-		default:
-		    break;
-		}
+		resultatRencontre.calculGains(rencontre, pari);
 	    }
 	}
 
@@ -149,12 +156,12 @@ public class RencontreControlleur {
 	// listeParis.get(i).setResultat(false);
 	// }
 
-	return "rencontreDetail";
+	// return "rencontreDetail";
     }
 
     private void populateRencontreDetail(Long sportId, Model model) {
 	model.addAttribute("equipes", equipeRepo.findBySportId(sportId));
-	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sportId));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportIdOrderByDateDebutAsc(sportId));
 	model.addAttribute("sportId", sportId);
     }
 }
