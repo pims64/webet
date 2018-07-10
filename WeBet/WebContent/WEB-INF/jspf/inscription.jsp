@@ -20,6 +20,8 @@
 
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
+				
+			<form:hidden path="utilisateur.id" />
 
 			<div class="form-group">
 				<form:label path="client.nom" cssClass="control-label col-sm-2">

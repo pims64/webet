@@ -19,7 +19,8 @@ public class HelloControlleur {
 	    if (AuthHelper.getRole().equals(ERole.ROLE_ADMIN))
 		return "redirect:/admincontrolleur/goToAdmin";
 	}
-	return "accueil";
+
+	return "redirect:/rencontrecontrolleur/afficherlisteAVenir";
     }
 
 }
