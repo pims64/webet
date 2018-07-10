@@ -20,7 +20,7 @@ public class HelloControlleur {
 		return "redirect:/admincontrolleur/goToAdmin";
 	}
 
-	return "redirect:/rencontrecontrolleur/afficherlisteAVenir";
+	return "redirect:/rencontrecontrolleur/pariEnCours";
     }
 
 }

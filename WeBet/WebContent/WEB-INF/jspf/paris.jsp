@@ -17,11 +17,13 @@
  	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
  	 <form:hidden path="pari.id" />
  	 
+	<input type="hidden" name="rencontreId" value="${rencontreId}" />
+				
  	 <div class="form-group">
-	 	 <form:label path="pari.sommePariee" for="inputdefault">
+	 	 <form:label path="pari.sommePariee">
 	 	 	<spring:message code="pari.sommePariee" />
 	 	 	<span class="required">*</span></form:label>
-	 	 <form:input type="number" name="quantity" min="1" max="${client.montantMaxPari}" path="pari.sommePariee" class="form-control" id="inputdefault"/>&nbsp;
+	 	 <form:input type="number" min="1" max="${client.montantMaxPari}" path="pari.sommePariee" class="form-control"/>&nbsp;
 		 <form:errors path="pari.sommePariee" cssClass="errors" />
  	 </div>
     
@@ -34,9 +36,9 @@
 		</form:select>
 <%-- 		<form:errors path="pari.choixPari" cssClass="errors" /> --%>
     </div>
-    
-    <form:hidden path="pari.client" value="${client}"/>
-    <form:hidden path="pari.rencontre" value="${rencontre}"/>
+    <%-- 
+    <form:hidden path="pari.client.id"/>
+    <form:hidden path="pari.rencontre.id"/> --%>
   
 	<input type="submit" value="<spring:message code="pari.creer.submit" />" />
 </form>
