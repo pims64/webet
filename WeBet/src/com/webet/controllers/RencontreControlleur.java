@@ -62,20 +62,22 @@ public class RencontreControlleur {
 			result.rejectValue("dateDebut", "error.rencontre.dateDebut.incorrecte");
 		    }
 		}
+	    } else {
+		result.rejectValue("equipeVisiteur", "error.rencontre.equipeVisiteur.identique");
 	    }
 	}
 	Long sportId = rencontre.getEquipeDomicile().getSport().getId();
-	model.addAttribute("equipes", equipeRepo.findBySportId(sportId));
-	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sportId));
+	populateRencontreDetail(sportId, model);
 	model.addAttribute("sportId", sportId);
 	model.addAttribute("rencontre", new Rencontre());
 	return "rencontreDetail";
     }
 
-    @GetMapping("/goToModifier/{id}")
-    public String goToModifier(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/modifier/{sportId}/{rencontreId}")
+    public String modifier(@PathVariable("sportId") Long sportId, @PathVariable("rencontreId") Long id, Model model) {
 	Rencontre rencontre = rencontreRepo.getOne(id);
 	model.addAttribute("rencontre", rencontre);
+	populateRencontreDetail(sportId, model);
 	return "rencontreDetail";
     }
 
@@ -94,17 +96,18 @@ public class RencontreControlleur {
 	return "listerencontreavenir";
     }
 
-    @GetMapping("/supprimer/{id}")
-    public String supprimer(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/supprimer/{sportId}/{id}")
+    public String supprimer(@PathVariable("sportId") Long sportId, @PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);
-	return "redirect:/admincontrolleur/goToAdmin";
+	populateRencontreDetail(sportId, model);
+	model.addAttribute("rencontre", new Rencontre());
+	return "rencontreDetail";
     }
 
     @PostMapping("/goToDetail")
     public String goToDetail(@ModelAttribute(value = "sport") Sport sport, Model model) {
-	model.addAttribute("equipes", equipeRepo.findBySportId(sport.getId()));
-	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sport.getId()));
-	model.addAttribute("sportId", sport.getId());
+	Long sportId = sport.getId();
+	populateRencontreDetail(sportId, model);
 	model.addAttribute("rencontre", new Rencontre());
 	return "rencontreDetail";
     }
@@ -136,5 +139,11 @@ public class RencontreControlleur {
 	// }
 
 	return "rencontreDetail";
+    }
+
+    private void populateRencontreDetail(Long sportId, Model model) {
+	model.addAttribute("equipes", equipeRepo.findBySportId(sportId));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sportId));
+	model.addAttribute("sportId", sportId);
     }
 }

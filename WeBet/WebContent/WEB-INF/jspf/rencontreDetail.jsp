@@ -42,6 +42,7 @@
 								<form:select path="rencontre.equipeVisiteur.id" cssClass="form-control">
 								<form:options items="${equipes}" itemValue="id" itemLabel="nom" />
 								</form:select>
+								<form:errors path="rencontre.equipeVisiteur.id" cssClass="errors" />
 							</div>
 						</td>
 						<td></td>
@@ -160,12 +161,12 @@
 							<td>${rencontre.coteVisiteur }</td>
 							<td>${rencontre.coteNul }</td>
 							<td>
-								<a href="<c:url value="/rencontrecontrolleur/modifier/${rencontre.id}" />">
+								<a href="<c:url value="/rencontrecontrolleur/modifier/${sportId}/${rencontre.id}" />">
 									<spring:message code="rencontre.modifier" />
 								</a>
 							</td>
 							<td>
-								<a href="<c:url value="/rencontrecontrolleur/supprimer/${rencontre.id}" />">
+								<a href="<c:url value="/rencontrecontrolleur/supprimer/${sportId}/${rencontre.id}" />">
 									<spring:message code="rencontre.supprimer" />
 								</a>
 							</td>

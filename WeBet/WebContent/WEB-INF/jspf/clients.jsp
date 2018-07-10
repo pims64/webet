@@ -22,6 +22,7 @@
 					<th><spring:message code="client.table.prenom" /></th>
 					<th><spring:message code="client.table.nom" /></th>
 					<th><spring:message code="client.table.email" /></th>
+					<th><spring:message code="client.table.role" /></th>
 					<th><spring:message code="client.table.supprimer" /></th>
 				</tr>
 					<c:forEach items="${clients}" var="client">
@@ -30,6 +31,7 @@
 							<td>${client.prenom }</td>
 							<td>${client.nom }</td>
 							<td>${client.utilisateur.email }</td>
+							<td>${client.utilisateur.role }</td>
 							<td>
 								<a href="<c:url value="/clientcontrolleur/supprimer/${client.id}" />">
 									<spring:message code="client.supprimer" />

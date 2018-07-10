@@ -13,10 +13,10 @@
 	<div class="row">
 	<div class="col-sm-2"></div>
 		<c:if test="${param.error}">
-			<span class="error"><spring:message code="login.inconnu" /></span>
+			<span class="errors"><spring:message code="login.inconnu" /></span>
 		</c:if>
 		<c:if test="${param.logout}">
-			<span class="error"><spring:message code="login.logout" /></span>
+			<span class="errors"><spring:message code="login.logout" /></span>
 		</c:if>
 		<form method="POST" action="<c:url value="/login" />"
 			class="form-horizontal col-sm-8">
