@@ -10,4 +10,6 @@ public interface IPariJpaRepository extends JpaRepository<Pari, Long> {
 
     public List<Pari> findByRencontreId(Long idRencontre);
 
+    public List<Pari> findByClientIdOrderByDateCreationDesc(Long idClient);
+
 }

@@ -1,7 +1,10 @@
 package com.webet.controllers;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -12,11 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webet.dao.IPariJpaRepository;
 import com.webet.dao.IRencontreJpaRepository;
+import com.webet.entities.Client;
 import com.webet.entities.EChoixPari;
 import com.webet.entities.Pari;
+import com.webet.entities.Rencontre;
 
 @Controller
 @RequestMapping("/paricontrolleur")
@@ -32,14 +38,29 @@ public class PariControlleur {
     @GetMapping("/goToCreer/{id}")
     public String goToCreer(@PathVariable(value = "id", required = true) Long id,
 	    @ModelAttribute(value = "pari") Pari pari, Model model) {
-	model.addAttribute("rencontre", rencontreRepo.getOne(id));
+	Rencontre rencontre = rencontreRepo.getOne(id);
+	model.addAttribute("rencontre", rencontre);
+	model.addAttribute("rencontreId", rencontre.getId());
 	model.addAttribute("client", AuthHelper.getPrincipal().getClient());
 	model.addAttribute("choixPari", EChoixPari.values());
 	return "paris";
     }
 
     @PostMapping("/creer")
-    public String creer(@Valid @ModelAttribute(value = "pari") Pari pari, BindingResult result, Model model) {
+    public String creer(@Valid @ModelAttribute(value = "pari") Pari pari, BindingResult result,
+	    @RequestParam("rencontreId") Long rencontreId, Model model) {
+
+	Client client = AuthHelper.getPrincipal().getClient();
+	Rencontre rencontre = rencontreRepo.getOne(rencontreId);
+
+	Date dateCreation = new Date();
+	dateCreation = DateUtils.setSeconds(dateCreation, 0);
+	dateCreation = DateUtils.setMilliseconds(dateCreation, 0);
+
+	pari.setDateCreation(dateCreation);
+	pari.setClient(client);
+	pari.setRencontre(rencontre);
+
 	if (!result.hasErrors()) {
 	    if (pari.getSommePariee() <= pari.getClient().getMontantMaxPari()) {
 		pariRepo.save(pari);

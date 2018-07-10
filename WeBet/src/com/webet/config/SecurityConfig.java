@@ -24,9 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
 	http.authorizeRequests()
-		.antMatchers("/static/**", "/index.jsp", "/hellocontrolleur/**", "/clientcontrolleur/**").permitAll()
-		.anyRequest().authenticated().and().formLogin().loginPage("/utilisateurcontrolleur/goToAuth")
-		.loginProcessingUrl("/login").defaultSuccessUrl("/hellocontrolleur/goToSite", true)
+		.antMatchers("/static/**", "/index.jsp", "/hellocontrolleur/**", "/clientcontrolleur/**",
+			"/rencontrecontrolleur/pariEnCours")
+		.permitAll().anyRequest().authenticated().and().formLogin()
+		.loginPage("/utilisateurcontrolleur/goToAuth").loginProcessingUrl("/login")
+		.defaultSuccessUrl("/hellocontrolleur/goToSite", true)
 		.failureUrl("/utilisateurcontrolleur/goToAuth?error=true").permitAll().and().logout()
 		.invalidateHttpSession(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/hellocontrolleur/goToSite").permitAll();

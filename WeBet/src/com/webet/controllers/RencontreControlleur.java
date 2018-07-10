@@ -81,6 +81,7 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/modifier/{sportId}/{rencontreId}")
     public String modifier(@PathVariable("sportId") Long sportId, @PathVariable("rencontreId") Long id, Model model) {
 	// Récupération de la rencontre
@@ -100,16 +101,15 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/afficherliste")
-    public String afficherListe(Model model) {
-	List<Rencontre> rencontres = rencontreRepo.findAll();
-	model.addAttribute("rencontres", rencontres);
-	return "listerencontre";
-    }
+    // @Secured("ROLE_ADMIN")
+    // @GetMapping("/afficherliste")
+    // public String afficherListe(Model model) {
+    // List<Rencontre> rencontres = rencontreRepo.findAll();
+    // model.addAttribute("rencontres", rencontres);
+    // return "listerencontre";
+    // }
 
-    @Secured("ROLE_USER")
-    @GetMapping("/afficherlisteAVenir")
+    @GetMapping("/pariEnCours")
     public String afficherListeAVenir(Model model) {
 	Date dateCourante = new Date();
 	List<Rencontre> rencontres = rencontreRepo.chercheRencontresAVenir(dateCourante);
@@ -117,6 +117,7 @@ public class RencontreControlleur {
 	return "accueil";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/supprimer/{sportId}/{id}")
     public String supprimer(@PathVariable("sportId") Long sportId, @PathVariable("id") Long id, Model model) {
 	rencontreRepo.deleteById(id);

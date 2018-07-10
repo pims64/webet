@@ -1,5 +1,7 @@
 package com.webet.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,13 +33,9 @@ public class Pari {
 
     private Double gain = 0.0;
 
-    public Pari() {
-    }
+    private Date dateCreation;
 
-    @Override
-    public String toString() {
-	return "Pari [id=" + id + ", client=" + client + ", rencontre=" + rencontre + ", sommePariee=" + sommePariee
-		+ ", choixPari=" + choixPari + ", gain=" + gain + "]";
+    public Pari() {
     }
 
     public Long getId() {
@@ -86,6 +84,20 @@ public class Pari {
 
     public void setGain(Double gain) {
 	this.gain = gain;
+    }
+
+    public Date getDateCreation() {
+	return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+	this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public String toString() {
+	return "Pari [id=" + id + ", client=" + client + ", rencontre=" + rencontre + ", sommePariee=" + sommePariee
+		+ ", choixPari=" + choixPari + ", gain=" + gain + ", dateCreation=" + dateCreation + "]";
     }
 
 }
