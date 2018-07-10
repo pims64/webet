@@ -27,7 +27,6 @@ import com.webet.entities.Pari;
 import com.webet.entities.Rencontre;
 import com.webet.entities.Sport;
 
-@Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping("/rencontrecontrolleur")
 public class RencontreControlleur {
@@ -41,12 +40,14 @@ public class RencontreControlleur {
     @Autowired
     private IEquipeJpaRepository equipeRepo;
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/goToCreer")
     public String goToCreer(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
 	model.addAttribute("isGoToCreer", true);
 	return "creerrencontre";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/creer")
     public String creer(@RequestParam("isResultNeeded") boolean isResultNeeded,
 	    @Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result, Model model) {
@@ -99,6 +100,7 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/afficherliste")
     public String afficherListe(Model model) {
 	List<Rencontre> rencontres = rencontreRepo.findAll();
@@ -106,12 +108,13 @@ public class RencontreControlleur {
 	return "listerencontre";
     }
 
-    @GetMapping("/afficherListeAVenir")
+    @Secured("ROLE_USER")
+    @GetMapping("/afficherlisteAVenir")
     public String afficherListeAVenir(Model model) {
 	Date dateCourante = new Date();
 	List<Rencontre> rencontres = rencontreRepo.chercheRencontresAVenir(dateCourante);
 	model.addAttribute("rencontres", rencontres);
-	return "listerencontreavenir";
+	return "accueil";
     }
 
     @GetMapping("/supprimer/{sportId}/{id}")
@@ -122,6 +125,7 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/goToDetail")
     public String goToDetail(@ModelAttribute(value = "sport") Sport sport, Model model) {
 	Long sportId = sport.getId();

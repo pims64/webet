@@ -14,20 +14,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.webet.dao.IPariJpaRepository;
+import com.webet.dao.IRencontreJpaRepository;
+import com.webet.entities.EChoixPari;
 import com.webet.entities.Pari;
 
 @Controller
 @RequestMapping("/paricontrolleur")
-@Secured("ROLE_ADMIN")
+@Secured("ROLE_USER")
 public class PariControlleur {
 
     @Autowired
     private IPariJpaRepository pariRepo;
 
-    @GetMapping("/goToCreer")
-    public String goToCreer(@ModelAttribute(value = "pari") Pari pari, Model model) {
-	model.addAttribute("isGoToCreer", true);
-	return "administration";
+    @Autowired
+    private IRencontreJpaRepository rencontreRepo;
+
+    @GetMapping("/goToCreer/{id}")
+    public String goToCreer(@PathVariable(value = "id", required = true) Long id,
+	    @ModelAttribute(value = "pari") Pari pari, Model model) {
+	model.addAttribute("rencontre", rencontreRepo.getOne(id));
+	model.addAttribute("client", AuthHelper.getPrincipal().getClient());
+	model.addAttribute("choixPari", EChoixPari.values());
+	return "paris";
     }
 
     @PostMapping("/creer")
@@ -36,13 +44,13 @@ public class PariControlleur {
 	    if (pari.getSommePariee() <= pari.getClient().getMontantMaxPari()) {
 		pariRepo.save(pari);
 		model.addAttribute("pari", new Pari());
-		return "administration";
+		return "paris";
 	    } else {
 		model.addAttribute("message",
 			"La somme pariée est supérieure à votre plafond maximum autorisé, Réessayer");
 	    }
 	}
-	return "pari";
+	return "redirect:/hellocontrolleur/goToSite";
     }
 
     @GetMapping("/lister")
