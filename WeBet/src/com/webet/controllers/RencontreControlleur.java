@@ -4,6 +4,9 @@ package com.webet.controllers;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -43,29 +46,37 @@ public class RencontreControlleur {
     }
 
     @PostMapping("/creer")
-    public String creer(@ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result, Model model) {
+    public String creer(@Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result,
+	    Model model) {
 	if (!result.hasErrors()) {
 	    if (rencontre.getEquipeDomicile().getId() != rencontre.getEquipeVisiteur().getId()) {
 		Date dateDebut = rencontre.getDateDebut();
 		Date dateFin = rencontre.getDateFin();
 		if (dateDebut != null && dateFin != null) {
 		    Date dateActuelle = new Date();
+		    dateActuelle = DateUtils.setSeconds(dateActuelle, 0);
+		    dateActuelle = DateUtils.setMilliseconds(dateActuelle, 0);
 		    if (dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) {
 			rencontreRepo.save(rencontre);
+		    } else {
+			result.rejectValue("dateDebut", "error.rencontre.dateDebut.incorrecte");
 		    }
 		}
 	    }
 	}
-
+	Long sportId = rencontre.getEquipeDomicile().getSport().getId();
+	model.addAttribute("equipes", equipeRepo.findBySportId(sportId));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sportId));
+	model.addAttribute("sportId", sportId);
 	model.addAttribute("rencontre", new Rencontre());
-	return "redirect:/admincontrolleur/goToAdmin";
+	return "rencontreDetail";
     }
 
     @GetMapping("/goToModifier/{id}")
     public String goToModifier(@PathVariable("id") Long id, Model model) {
 	Rencontre rencontre = rencontreRepo.getOne(id);
 	model.addAttribute("rencontre", rencontre);
-	return "modifierrencontre";
+	return "rencontreDetail";
     }
 
     @GetMapping("/afficherliste")
@@ -93,6 +104,8 @@ public class RencontreControlleur {
     public String goToDetail(@ModelAttribute(value = "sport") Sport sport, Model model) {
 	model.addAttribute("equipes", equipeRepo.findBySportId(sport.getId()));
 	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportId(sport.getId()));
+	model.addAttribute("sportId", sport.getId());
+	model.addAttribute("rencontre", new Rencontre());
 	return "rencontreDetail";
     }
 

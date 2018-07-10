@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Rencontre {
 
@@ -26,9 +28,11 @@ public class Rencontre {
     private Equipe equipeDomicile;
 
     @NotNull(message = "{error.rencontre.dateDebut.obligatoire}")
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dateDebut;
 
     @NotNull(message = "{error.rencontre.dateFin.obligatoire}")
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dateFin;
 
     @NotNull(message = "{error.rencontre.coteVisiteur.obligatoire}")
