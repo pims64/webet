@@ -29,13 +29,15 @@ public class Pari {
     @Enumerated(EnumType.STRING)
     private EChoixPari choixPari;
 
+    private Double gain = 0.0;
+
     public Pari() {
     }
 
     @Override
     public String toString() {
 	return "Pari [id=" + id + ", client=" + client + ", rencontre=" + rencontre + ", sommePariee=" + sommePariee
-		+ ", choixPari=" + choixPari + "]";
+		+ ", choixPari=" + choixPari + ", gain=" + gain + "]";
     }
 
     public Long getId() {
@@ -76,6 +78,14 @@ public class Pari {
 
     public void setChoixPari(EChoixPari choixPari) {
 	this.choixPari = choixPari;
+    }
+
+    public Double getGain() {
+	return gain;
+    }
+
+    public void setGain(Double gain) {
+	this.gain = gain;
     }
 
 }

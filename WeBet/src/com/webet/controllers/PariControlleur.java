@@ -41,13 +41,16 @@ public class PariControlleur {
     @PostMapping("/creer")
     public String creer(@Valid @ModelAttribute(value = "pari") Pari pari, BindingResult result, Model model) {
 	if (!result.hasErrors()) {
-	    pariRepo.save(pari);
-	    model.addAttribute("pari", new Pari());
-	    return "paris";
+	    if (pari.getSommePariee() <= pari.getClient().getMontantMaxPari()) {
+		pariRepo.save(pari);
+		model.addAttribute("pari", new Pari());
+		return "paris";
+	    } else {
+		model.addAttribute("message",
+			"La somme pariée est supérieure à votre plafond maximum autorisé, Réessayer");
+	    }
 	}
-
 	return "redirect:/hellocontrolleur/goToSite";
-
     }
 
     @GetMapping("/lister")
