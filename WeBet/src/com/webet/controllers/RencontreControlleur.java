@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.webet.dao.IEquipeJpaRepository;
 import com.webet.dao.IPariJpaRepository;
 import com.webet.dao.IRencontreJpaRepository;
+import com.webet.entities.EChoixPari;
 import com.webet.entities.Pari;
 import com.webet.entities.Rencontre;
 import com.webet.entities.Sport;
@@ -114,21 +115,31 @@ public class RencontreControlleur {
 
     @GetMapping("/resultat") // Validation des paris associés à une rencontre après publication des résultats
     public String resultat(@ModelAttribute(value = "rencontre") Rencontre rencontre, Model model) {
-	String resultatRencontre;
-	if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() > 0)
-	    resultatRencontre = "VICTOIRE_DOMICILE";
-	else if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() < 0)
-	    resultatRencontre = "VICTOIRE_VISITEUR";
-	else
-	    resultatRencontre = "NUL";
+	EChoixPari resultatRencontre;
+	if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() > 0) {
+	    resultatRencontre = EChoixPari.VICTOIRE_DOMICILE;
+	} else if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() < 0) {
+	    resultatRencontre = EChoixPari.VICTOIRE_VISITEUR;
+	} else {
+	    resultatRencontre = EChoixPari.NUL;
+	}
 	List<Pari> listeParis = pariRepo.findByRencontreId(rencontre.getId());
 	for (Pari pari : listeParis) {
-	    if (resultatRencontre.equals(pari.getChoixPari().getName())) {
-		pari.setResultat(true);
-	    } else {
-		pari.setResultat(false);
+	    if (resultatRencontre.equals(pari.getChoixPari())) {
+		switch (resultatRencontre) {
+		case VICTOIRE_DOMICILE:
+		    pari.setGain(rencontre.getCoteDomicile() * pari.getSommePariee());
+		    break;
+		case VICTOIRE_VISITEUR:
+		    pari.setGain(rencontre.getCoteVisiteur() * pari.getSommePariee());
+		    break;
+		case NUL:
+		    pari.setGain(rencontre.getCoteNul() * pari.getSommePariee());
+		    break;
+		default:
+		    break;
+		}
 	    }
-
 	}
 
 	// for (int i = 0; i < listeParis.size(); i++) {
