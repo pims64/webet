@@ -20,14 +20,6 @@ public class EquipeDaoTest {
     @Autowired
     protected ApplicationContext context;
 
-    // @Test
-    // public void testGetId() {
-    // Client client = new Client();
-    // Integer id = client.getId();
-    // assertNull(id);
-    //
-    // }
-
     @Test
     public void testCreate() {
 

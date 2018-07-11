@@ -60,7 +60,7 @@ public class EquipeTest {
     @Test
     public void testSetNomImg() {
 	Equipe equipe = new Equipe();
-	equipe.setNom("nomImg1");
+	equipe.setNom("nomImg2");
 	assertEquals(equipe.getNom(), "nomImg1");
 
     }
