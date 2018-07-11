@@ -52,10 +52,6 @@ public class RencontreControlleur {
     public String creer(@RequestParam("isResultNeeded") boolean isResultNeeded,
 	    @Valid @ModelAttribute(value = "rencontre") Rencontre rencontre, BindingResult result, Model model) {
 
-	if (isResultNeeded) {
-	    resultat(rencontre);
-	}
-
 	if (!result.hasErrors()) {
 	    if (rencontre.getEquipeDomicile().getId() != rencontre.getEquipeVisiteur().getId()) {
 		Date dateDebut = rencontre.getDateDebut();
@@ -65,7 +61,11 @@ public class RencontreControlleur {
 		    dateActuelle = DateUtils.setSeconds(dateActuelle, 0);
 		    dateActuelle = DateUtils.setMilliseconds(dateActuelle, 0);
 		    if ((dateDebut.after(dateActuelle) && dateFin.after(dateDebut)) || isResultNeeded) {
-			rencontreRepo.save(rencontre);
+			if (isResultNeeded) {
+			    pariRepo.saveAll(resultat(rencontre));
+			} else {
+			    rencontreRepo.save(rencontre);
+			}
 		    } else {
 			result.rejectValue("dateDebut", "error.rencontre.dateDebut.incorrecte");
 		    }
@@ -74,9 +74,12 @@ public class RencontreControlleur {
 		result.rejectValue("equipeVisiteur", "error.rencontre.equipeVisiteur.identique");
 	    }
 	}
+
 	Long sportId = rencontre.getEquipeDomicile().getSport().getId();
+
 	populateRencontreDetail(sportId, model);
 	model.addAttribute("sportId", sportId);
+	model.addAttribute("isResultNeeded", false);
 	model.addAttribute("rencontre", new Rencontre());
 	return "rencontreDetail";
     }
@@ -101,18 +104,13 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
-    // @Secured("ROLE_ADMIN")
-    // @GetMapping("/afficherliste")
-    // public String afficherListe(Model model) {
-    // List<Rencontre> rencontres = rencontreRepo.findAll();
-    // model.addAttribute("rencontres", rencontres);
-    // return "listerencontre";
-    // }
-
     @GetMapping("/pariEnCours")
     public String afficherListeAVenir(Model model) {
 	Date dateCourante = new Date();
-	List<Rencontre> rencontres = rencontreRepo.chercheRencontresAVenir(dateCourante);
+	dateCourante = DateUtils.setSeconds(dateCourante, 0);
+	dateCourante = DateUtils.setMilliseconds(dateCourante, 0);
+
+	List<Rencontre> rencontres = rencontreRepo.findByDateDebutGreaterThan(dateCourante);
 	model.addAttribute("rencontres", rencontres);
 	return "accueil";
     }
@@ -136,9 +134,7 @@ public class RencontreControlleur {
 	return "rencontreDetail";
     }
 
-    // @GetMapping("/resultat") // Validation des paris associés à une rencontre
-    // après publication des résultats
-    private void resultat(Rencontre rencontre) {
+    private List<Pari> resultat(Rencontre rencontre) {
 	EChoixPari resultatRencontre;
 	if (rencontre.getScoreDomicile() - rencontre.getScoreVisiteur() > 0) {
 	    resultatRencontre = EChoixPari.VICTOIRE_DOMICILE;
@@ -150,18 +146,13 @@ public class RencontreControlleur {
 	List<Pari> listeParis = pariRepo.findByRencontreId(rencontre.getId());
 	for (Pari pari : listeParis) {
 	    if (resultatRencontre.equals(pari.getChoixPari())) {
-		resultatRencontre.calculGains(rencontre, pari);
+		Double gain = resultatRencontre.calculGains(rencontre, pari);
+		pari.setGain(gain);
 	    }
 	}
 
-	// for (int i = 0; i < listeParis.size(); i++) {
-	// if (resultatRencontre.equals(listeParis.get(i).getChoixPari().getName()))
-	// listeParis.get(i).setResultat(true);
-	// else
-	// listeParis.get(i).setResultat(false);
-	// }
+	return listeParis;
 
-	// return "rencontreDetail";
     }
 
     private void populateRencontreDetail(Long sportId, Model model) {
