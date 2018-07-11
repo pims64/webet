@@ -14,10 +14,9 @@ public interface IRencontreJpaRepository extends JpaRepository<Rencontre, Long> 
     @Query("select r from Rencontre r where r.dateDebut > :dateCourante")
     public List<Rencontre> chercheRencontresAVenir(@Param("dateCourante") Date dateCourante);
 
-    // @Query("select r from Rencontre r where r.equipeVisiteur.sport.id =
-    // :idSport")
-    // public List<Rencontre> chercheRencontresParSportId(@Param("idSport") Long
-    // idSport);
+    public List<Rencontre> findByDateDebutLessThan(Date dateCourante);
+
+    public List<Rencontre> findByDateDebutGreaterThan(Date dateCourante);
 
     public List<Rencontre> findByEquipeVisiteurSportId(Long idSport);
 

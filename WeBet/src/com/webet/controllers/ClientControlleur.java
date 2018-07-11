@@ -1,9 +1,11 @@
 package com.webet.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,9 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.webet.dao.IClientJpaRepository;
-import com.webet.dao.ISportJpaRepository;
+import com.webet.dao.IPariJpaRepository;
+import com.webet.dao.IRencontreJpaRepository;
 import com.webet.entities.Client;
 import com.webet.entities.ERole;
+import com.webet.entities.Pari;
+import com.webet.entities.Rencontre;
 
 @Controller
 @RequestMapping("/clientcontrolleur")
@@ -29,7 +34,10 @@ public class ClientControlleur {
     private IClientJpaRepository clientRepo;
 
     @Autowired
-    private ISportJpaRepository sportRepo;
+    private IRencontreJpaRepository rencontreRepo;
+
+    @Autowired
+    private IPariJpaRepository pariRepo;
 
     @GetMapping("/goToCreer")
     public String goToCreer(@ModelAttribute(value = "client") Client client, Model model) {
@@ -39,13 +47,16 @@ public class ClientControlleur {
     @PostMapping("/creer")
     public String creer(@Valid @ModelAttribute(value = "client") Client client, BindingResult result, Model model) {
 	if (!result.hasErrors()) {
+
+	    // Encodage du mot de passe
 	    encodePassword(client);
 	    client.getUtilisateur().setRole(ERole.ROLE_USER);
 	    model.addAttribute("client", clientRepo.save(client));
+
+	    populateListePari(model);
+
 	    return "accueil";
 	}
-	// List<Sport> sports = sportRepo.findAll();
-	// model.addAttribute("sports", sports);
 	return "inscription";
     }
 
@@ -62,36 +73,36 @@ public class ClientControlleur {
 	if (id != AuthHelper.getPrincipal().getClient().getId()) {
 	    return "redirect:/hellocontrolleur/goToSite";
 	}
-	Client client = clientRepo.getOne(AuthHelper.getPrincipal().getClient().getId());
+
+	Long idClient = AuthHelper.getPrincipal().getClient().getId();
+
+	// récupération du client
+	Client client = clientRepo.getOne(idClient);
 	model.addAttribute("client", client);
-	// List<Sport> sports = sportRepo.findAll();
-	// model.addAttribute("sports", sports);
-	// model.addAttribute("roles", ERole.values());
+
+	// récupération des paris du client
+	List<Pari> paris = pariRepo.findByClientIdOrderByDateCreationDesc(idClient);
+	model.addAttribute("paris", paris);
+
 	return "modification";
     }
 
-    // @Secured("ROLE_USER")
-    // @PostMapping("/modifier")
-    // public String modifier(@Valid @ModelAttribute(value = "client") Client
-    // client, BindingResult result, Model model) {
-    // // Long id = AuthHelper.getPrincipal().getClient().getId();
-    // // client = clientRepo.getOne(id);
-    // // model.addAttribute("client", client);
-    // // if (!result.hasErrors()) {
-    // // encodePassword(client);
-    // // clientRepo.save(client);
-    // // }
-    // // List<Sport> sports = sportRepo.findAll();
-    // // model.addAttribute("sports", sports);
-    // return "modification";
-    // }
+    @PostMapping("/modifier")
+    public String modifier(@Valid @ModelAttribute(value = "client") Client client, BindingResult result, Model model) {
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/afficherliste")
-    public String afficherListe(Model model) {
-	List<Client> clients = clientRepo.findAll();
-	model.addAttribute("clients", clients);
-	return "listeclient";
+	// récupération des paris du client
+	List<Pari> paris = pariRepo.findByClientIdOrderByDateCreationDesc(client.getId());
+	model.addAttribute("paris", paris);
+
+	if (!result.hasErrors()) {
+	    // Encodage du mot de passe
+	    encodePassword(client);
+	    model.addAttribute("client", clientRepo.save(client));
+
+	    populateListePari(model);
+	    return "accueil";
+	}
+	return "modification";
     }
 
     @Secured("ROLE_ADMIN")
@@ -100,6 +111,15 @@ public class ClientControlleur {
     public String supprimer(@PathVariable("id") Long id, Model model) {
 	clientRepo.deleteById(id);
 	return "redirect:/admincontrolleur/goToAdmin";
+    }
+
+    private void populateListePari(Model model) {
+	// On peuple la page d'accueil avant la redirection
+	Date dateCourante = new Date();
+	dateCourante = DateUtils.setSeconds(dateCourante, 0);
+	dateCourante = DateUtils.setMilliseconds(dateCourante, 0);
+	List<Rencontre> rencontres = rencontreRepo.findByDateDebutGreaterThan(dateCourante);
+	model.addAttribute("rencontres", rencontres);
     }
 
 }

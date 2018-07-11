@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <c:import url="header.jsp" />
 
 
@@ -8,10 +10,45 @@
 <div class="container-fluid bg-3 text-center">
 
 	<div class="row">
-	<div class="col-sm-3"></div>
+		<div class="col-sm-3">
+			<span class="row-header"><spring:message code="pari.listeParis" /></span>
+		</div>
+		<div class="col-sm-6">
+		
+			<table class="table">
+				<tr>
+					<th><spring:message code="pari.table.equipeDomicile" /></th>
+					<th><spring:message code="pari.table.equipeVisiteur" /></th>
+					<th><spring:message code="pari.table.mise" /></th>
+					<th><spring:message code="pari.table.choixPari" /></th>
+					<th><spring:message code="pari.table.gain" /></th>
+				</tr>
+				<tbody>
+					<c:forEach items="${paris}" var="pari">
+					<tr>
+						<td>${pari.rencontre.equipeDomicile.nom }</td>
+						<td>${pari.rencontre.equipeVisiteur.nom }</td>
+						<td>${pari.sommePariee }</td>
+						<td>${pari.choixPari }</td>
+						<td>${pari.gain }</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
+	
+	<hr><br>
+
+	<div class="row">
+	<div class="col-sm-3">
+		<span class="row-header"><spring:message code="client.modification.compte" /></span>
+	</div>
 	<div class="col-sm-6">
 		<form method="POST"
-			action="${pageContext.request.contextPath}/clientcontrolleur/creer"
+			action="${pageContext.request.contextPath}/clientcontrolleur/modifier"
 			modelAttribute="client"
 			class="form-horizontal">
 

@@ -2,6 +2,7 @@ package com.webet.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,7 +22,7 @@ public class Pari {
     @ManyToOne
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.ALL })
     private Rencontre rencontre;
 
     @NotNull(message = "{error.pari.sommePariee.obligatoire}")

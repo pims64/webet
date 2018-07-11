@@ -3,23 +3,26 @@ package com.webet.entities;
 public enum EChoixPari {
     VICTOIRE_DOMICILE {
 	@Override
-	public void calculGains(Rencontre rencontre, Pari pari) {
+	public Double calculGains(Rencontre rencontre, Pari pari) {
 	    Double gain = rencontre.getCoteDomicile() * pari.getSommePariee();
-	    pari.setGain(gain);
+	    // pari.setGain(gain);
+	    return gain;
 	}
     },
     NUL {
 	@Override
-	public void calculGains(Rencontre rencontre, Pari pari) {
+	public Double calculGains(Rencontre rencontre, Pari pari) {
 	    Double gain = rencontre.getCoteVisiteur() * pari.getSommePariee();
-	    pari.setGain(gain);
+	    // pari.setGain(gain);
+	    return gain;
 	}
     },
     VICTOIRE_VISITEUR {
 	@Override
-	public void calculGains(Rencontre rencontre, Pari pari) {
+	public Double calculGains(Rencontre rencontre, Pari pari) {
 	    Double gain = rencontre.getCoteNul() * pari.getSommePariee();
-	    pari.setGain(gain);
+	    // pari.setGain(gain);
+	    return gain;
 	}
     };
 
@@ -27,6 +30,6 @@ public enum EChoixPari {
 	return name();
     }
 
-    public abstract void calculGains(Rencontre rencontre, Pari pari);
+    public abstract Double calculGains(Rencontre rencontre, Pari pari);
 
 }
