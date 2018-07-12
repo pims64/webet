@@ -157,7 +157,7 @@ public class RencontreControlleur {
 
     private void populateRencontreDetail(Long sportId, Model model) {
 	model.addAttribute("equipes", equipeRepo.findBySportId(sportId));
-	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportIdOrderByDateDebutAsc(sportId));
+	model.addAttribute("rencontres", rencontreRepo.findByEquipeDomicileSportIdOrderByDateFinDesc(sportId));
 	model.addAttribute("sportId", sportId);
     }
 }

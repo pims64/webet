@@ -25,20 +25,16 @@
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand active"
-					href="<c:url value="/hellocontrolleur/goToSite"/>">WeBet</a>
+					href="<c:url value="/hellocontrolleur/goToSite"/>"><img src="<c:url value="/static/images/WeBet_Logo.png"/>" alt="Offre WeBet!!" width="225px"/></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
-				<!-- 				<ul class="nav navbar-nav">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">About</a></li>
-					<li><a href="#">Gallery</a></li>
-					<li><a href="#">Contact</a></li>
-				</ul> -->
-				<%-- <sec:authentication property="principal.client.id" /> --%>
 				<ul class="nav navbar-nav navbar-right">
 					<sec:authorize access="hasAnyRole('ROLE_USER')">
 						<li><a href="${pageContext.request.contextPath }/clientcontrolleur/modifier/<sec:authentication property="principal.client.id" />"><span class="glyphicon glyphicon-user"></span>
-								<spring:message code="menu.compte" /></a></li>
+								<sec:authentication property="principal.client.prenom" /> <sec:authentication property="principal.client.nom" />
+								<%-- <spring:message code="menu.compte" /> --%>
+							</a>
+						</li>
 					</sec:authorize>
 					<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
 						<li><a href="<c:url value="/logout"/>"><span
@@ -55,9 +51,6 @@
 									code="menu.connexion" /></a>
 						</li>
 					</sec:authorize>
-
-
-
 				</ul>
 			</div>
 		</div>

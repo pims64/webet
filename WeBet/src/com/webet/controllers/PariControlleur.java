@@ -68,15 +68,11 @@ public class PariControlleur {
 		System.out.println("condition montant");
 		pariRepo.save(pari);
 		model.addAttribute("pari", new Pari());
-		return "paris";
 	    } else {
 		model.addAttribute("message",
 			"La somme pariée est supérieure à votre plafond maximum autorisé, Réessayer");
-		System.out.println("La somme pariée est supérieure à votre plafond maximum autorisé, Réessayer");
-		return "paris";
 	    }
 	}
-	System.out.println("retour site");
 	return "redirect:/hellocontrolleur/goToSite";
     }
 

@@ -25,4 +25,6 @@ public interface IRencontreJpaRepository extends JpaRepository<Rencontre, Long> 
 
     public List<Rencontre> findByEquipeDomicileSportIdOrderByDateDebutAsc(Long id);
 
+    public List<Rencontre> findByEquipeDomicileSportIdOrderByDateFinDesc(Long id);
+
 }

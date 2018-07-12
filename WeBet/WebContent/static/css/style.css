@@ -1,13 +1,59 @@
 .navbar {
-	font-size: 24px;
+	font-size: 20px;
 	margin-bottom: 0;
 	border-radius: 0;
 }
 
+.navbar-inverse{
+	background-color: #BA2020;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+	color: #fff;
+}
+
+.navbar-inverse .navbar-brand{
+	color: #fff;
+}
+
+.btn-default{
+	color: #fff;
+	background-color: #BA2020;
+}
+
+.row-accueil {
+    margin-right: -15px;
+    margin-left: 325px;
+}
+
+.row-accueil::after{
+	box-sizing: border-box;
+}
 
 body{
 	font-size: 14px;
 	font-family: 'Titillium Web', sans-serif;
+	
+	color: #14255D;
+}
+
+.pari-equipe{
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.pari-date{
+	font-style: italic;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.pari{
+	border: 1px solid #BA2020;
+	border-radius: 18px 0px;
+	box-shadow: 6px 6px 12px #aaa;
+	padding: 25px;
+	margin: 10px;
 }
 
 footer {

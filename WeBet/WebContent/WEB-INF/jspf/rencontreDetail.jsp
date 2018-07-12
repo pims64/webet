@@ -2,6 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	
 	<c:import url="header.jsp" />
 	
@@ -194,8 +195,8 @@
 							<td>${rencontre.id }</td>
 							<td>${rencontre.equipeDomicile.nom }</td>
 							<td>${rencontre.equipeVisiteur.nom }</td>
-							<td>${rencontre.dateDebut }</td>
-							<td>${rencontre.dateFin }</td>
+							<td><fmt:formatDate value="${rencontre.dateDebut}" pattern="dd MMM y (HH:mm)" /></td>
+							<td><fmt:formatDate value="${rencontre.dateFin}" pattern="dd MMM y (HH:mm)" /></td>
 							<td>${rencontre.coteDomicile }</td>
 							<td>${rencontre.coteVisiteur }</td>
 							<td>${rencontre.coteNul }</td>
